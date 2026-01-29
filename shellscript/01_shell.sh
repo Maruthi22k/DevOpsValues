@@ -1,8 +1,10 @@
 #!/bin/bash
 
+PERSION=Maruthi
+DevOPsPPP=Anusha
+Friend=Sridhatri
 
-
-echo "Maruthi:: welcome to shell scripts"
-echo "Anusha:: welcome to shell scripts and also to DevOPs"
-echo "Sridhatri:: welcome to shell scripts"
-echo "SaiSidvik:: welcome to shell scripts"
+echo "$DevOPsPPP:: welcome to shell $PERSION scripts"
+echo "$Friend:: welcome to shell scripts and also to DevOPs"
+echo "$PERSION:: welcome to shell scripts"
+echo "$Friend:: welcome to shell scripts"
