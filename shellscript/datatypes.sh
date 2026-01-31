@@ -6,3 +6,10 @@ age1=38
 sumage=$((age1+age))
 
 echo "age details: $sumage"
+
+age=30
+name=maruthi
+agedetails=$((age1+age))
+
+echo "age details: $agedetails"
+
