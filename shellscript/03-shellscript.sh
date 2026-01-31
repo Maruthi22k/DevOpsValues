@@ -9,6 +9,8 @@ read USER_NAME
 echo "username is ${USER_NAME}"
 read -p "Enter your age: $age"
 
+echo "Please Enter your username::"
+read $color
 
 echo "Please Enter your username::"
 read -p USER_NAME
