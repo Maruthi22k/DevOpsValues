@@ -1,6 +1,6 @@
 #!/bin/bash
 
-age=25
+age=21
 color="white"
 
 echo "please pass input ="
