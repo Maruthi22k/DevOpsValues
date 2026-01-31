@@ -11,7 +11,7 @@ read -p "Enter your age: $age"
 
 
 echo "Please Enter your username::"
-read USER_NAME
+read -p USER_NAME
 
 echo "User name is $USER_NAME"
 
