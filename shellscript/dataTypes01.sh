@@ -12,8 +12,8 @@ DATATYPE=(Maruthi,Anusha,SaiSidvik)
 echo "Names are : $DATATYPE"
 
 echo "all names are: ${DATATYPE[@]}"
-echo "all names are: ${DATATYPE[*]}"
+echo "all names using * : ${DATATYPE[*]}"
 echo "all names are: ${DATATYPE[#]}"
-#echo "First Fruit is: ${FRUITS[0]}"
-#echo "Second Fruit is: ${FRUITS[1]}"
-#echo "Third Fruit is: ${FRUITS[2]}"
+echo "First Fruit is: ${DATATYPE[0]}"
+echo "Second Fruit is: ${DATATYPE[1]}"
+echo "Third Fruit is: ${DATATYPE[2]}"
