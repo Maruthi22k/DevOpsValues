@@ -9,7 +9,7 @@ echo "age details: $sumage"
 
 age=30
 name=maruthi
-agedetails=$((age1+name))
+agedetails=$((age1)+$(name))
 
 echo "age details: $agedetails"
 
