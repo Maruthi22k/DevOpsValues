@@ -11,7 +11,7 @@ echo "sum is : $sum"
 DATATYPE=(Maruthi,Anusha,SaiSidvik)
 echo "Names are : $DATATYPE"
 
-echo "all names are: ${FRUITS[@]}"
+echo "all names are: ${DATATYPE[@]}"
 #echo "First Fruit is: ${FRUITS[0]}"
 #echo "Second Fruit is: ${FRUITS[1]}"
 #echo "Third Fruit is: ${FRUITS[2]}"
