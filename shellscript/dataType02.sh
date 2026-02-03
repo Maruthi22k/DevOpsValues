@@ -13,7 +13,5 @@ echo "Number is less than 40"
 elif [ $Number -eq 16 ] then
     echo "Number is equal to 16"
 
-else
-    echo "other position values"
 fi
  
