@@ -1,29 +1,36 @@
 #!/bin/bash
 
-Number=$(id -u)
-if [ $Number -ne 0 ]; then
-    echo "Please run proper way ity failure"
-    exit 1
+USERID=$(id -u)
 
+if [ $USERID -ne 0 ]; then
+    echo "Please run this script with root user access"
+    exit 1
+fi
+
+echo "Installing Nginx"
+dnf install nginx -y
+
+if [ $? -ne 0 ]; then
+    echo "Installing Nginx ... FAILURE"
+    exit 1
 else
-    echo "Please install Sucess"
-
-dnf install httpd -y
-
-if [$? -ne 0];then
-    echo "Install httpd failed"
-    exit 1
-else 
-    echo "Install httpd Sucess"
+    echo "Installing Nginx ... SUCCESS"
+fi
 
 dnf install mysql -y
 
-if [$? -ne 0];then
-    echo "Install failed mysql"
+if [ $? -ne 0 ]; then
+    echo "Installing MySQL ... FAILURE"
     exit 1
-else 
-    echo "Install mysql Sucess"
+else
+    echo "Installing MySQL ... SUCCESS"
+fi
 
-fi
-fi
+dnf install nodejs -y
+
+if [ $? -ne 0 ]; then
+    echo "Installing nodejs ... FAILURE"
+    exit 1
+else
+    echo "Installing nodejs ... SUCCESS"
 fi
