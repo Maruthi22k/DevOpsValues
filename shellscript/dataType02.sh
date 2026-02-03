@@ -1,20 +1,16 @@
 #!/bin/bash
 
-Number=$10
 
-if [ $Number -lt 10 ]
-then
-echo "Number is greater than 50"
+NUMBER=$1
 
-else if [ $Number -gt 40 ] 
-then
-echo "Number is less than 40"
-
-elif [ $Number -eq 16 ] then
-    echo "Number is equal to 16"
-
+# -gt -> greater than
+# -lt -> less than
+# -eq -> equal
+# -ne -> not equal
+if [ $NUMBER -gt 20 ]; then
+    echo "Given number: $NUMBER is greater than 20"
+elif [ $NUMBER -eq 20 ]; then
+    echo "Given number: $NUMBER is equal to 20"
 else
-    echo "other position values"
+    echo "Given number: $NUMBER is less than 20"
 fi
-fi
- 
