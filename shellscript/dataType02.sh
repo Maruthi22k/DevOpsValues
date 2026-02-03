@@ -6,14 +6,14 @@ if [ $Number -lt 10 ]
 then
 echo "Number is greater than 50"
 
-else if [ $Number -gt 40] 
+else if [ $Number -gt 40 ] 
+then
 echo "Number is less than 40"
 
-#else if [ $Number -eq 16] 
-#echo "Number is equal to 16"
+elif [ $Number -eq 16 ] then
+    echo "Number is equal to 16"
 
 else
-echo "other position values"
-
+    echo "other position values"
 fi
  
