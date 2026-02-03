@@ -4,6 +4,8 @@ START_TIME=$(date +%s)
 
 echo "Start time is = $START_TIME"
 
+sleep=10
+
 END_TIME=$(date +%s)
 
 echo "End time is = $END_TIME"
