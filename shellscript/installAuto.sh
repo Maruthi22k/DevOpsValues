@@ -7,3 +7,5 @@ if [ $Number -ne 0 ]; then
 
 else
     echo "Please install Sucess"
+
+fi
