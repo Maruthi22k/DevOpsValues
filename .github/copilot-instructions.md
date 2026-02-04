@@ -1,42 +1,55 @@
 # GitHub Copilot instructions for DevOpsValues 🔧
 
 Purpose
-- Help AI coding agents be immediately productive in this repository by documenting the concrete, discoverable structure and conservative, repo-specific rules.
+- Surface the repository's real, discoverable conventions so an AI coding agent can make small, high-confidence changes.
 
-Repository snapshot (what is discoverable)
-- Root: `README.MD` — currently contains a short welcome message. Update this file when adding scripts or usage docs.
-- `shellscript/` — present but currently empty; this is the intended home for shell/PowerShell scripts and related helpers.
-- Development environment: user works on Windows (PowerShell terminal). Expect Windows-first testing.
+Quick repository snapshot (discoverable)
+- Root: README.MD — short welcome; update when adding runnable scripts or usage docs.
+- `shellscript/` — contains multiple `.sh` scripts (examples: `installAuto.sh`, `functionInstall.sh`, `timeCheck.sh`, `04-AllVariable.sh`). These are predominantly POSIX/Bash scripts and often call Linux utilities (e.g., `dnf`).
+- The workspace is edited on Windows, but many scripts target Linux environments (check shebangs and package managers before running).
 
-How to act (high priority, concrete)
-1. Before adding or changing scripts: open an issue or ask the repository owner for clarification about the intended shell (PowerShell vs POSIX) and any naming conventions. If unsure, prefer adding a small explanatory note in `README.MD` describing the choice.
-2. Place scripts under `shellscript/`. If you create PowerShell scripts use `.ps1` extension; for POSIX shell use `.sh` and include a `#!/usr/bin/env sh` shebang.
-3. Every new script must include a short header comment with: purpose, expected inputs/outputs, example usage, and target shell/platform. Example header:
+High-priority rules for agents
+1. Confirm the target shell/platform before changing or adding scripts. Many existing files use `#!/bin/bash` and `dnf` (Fedora/RHEL). If uncertain, open an issue asking whether scripts should target PowerShell or Bash.
+2. Place all new scripts in `shellscript/`. PowerShell scripts use `.ps1`; POSIX scripts use `.sh` and should include a proper shebang (e.g., `#!/usr/bin/env bash`).
+3. Every new or modified script must include a header block (exactly like the examples below). Update `README.MD` with any user-facing usage.
 
-    # example: `shellscript/utility.ps1`
-    # Purpose: <one-line>
-    # Usage: pwsh ./utility.ps1 --flag value
+Required script header (copy into the top of each script)
+```
+# Purpose: one-line description
+# Target: bash | sh | pwsh  (explicitly state intended shell)
+# Inputs: flags/env vars
+# Output: files/side-effects
+# Example: sudo bash ./shellscript/installAuto.sh
+```
 
-4. Update `README.MD` when you add user-facing scripts with: quick usage examples, required runtime (PowerShell Core / pwsh or Bash), and how to test locally.
-5. Test locally in PowerShell on Windows (the workspace uses Windows). If you add POSIX scripts, also verify with WSL or a POSIX environment if possible.
+Concrete examples from this repo
+- `shellscript/installAuto.sh`: checks for root (`id -u`), then uses `dnf` to install `nginx`, `mysql`, `nodejs`. Treat it as Linux-only and run with `sudo` or in a root shell.
+- `shellscript/functionInstall.sh`: defines `install_package()` which calls `dnf install` and exits on failure — follow the same exit-on-error pattern when adding similar helpers.
+- `shellscript/timeCheck.sh`: measures execution time using `date +%s` and arithmetic — use this pattern when adding simple runtime measurements.
 
-Naming and change hygiene
-- Keep file names short, lower-case, and hyphen-separated (e.g., `deploy-db.ps1`).
-- Include small, focused commits and update `README.MD` with each new script or major change so humans and agents can find how to run the repo.
+Naming and style guidance (repo-specific)
+- Existing names are mixed (numeric prefixes, camelCase, hyphenated). For new files prefer `lower-case-hyphen.sh` (consistent and shell-friendly), but do not rename existing files without maintainer approval.
+- Use `set -euo pipefail` in Bash scripts when adding robust automation, unless a script intentionally handles errors inline.
+
+How to run and test scripts (practical commands)
+- Quick run (Linux/WSL/Git Bash): `sudo bash shellscript/installAuto.sh`
+- Run a single function/script for iteration: `bash -n shellscript/functionInstall.sh` (syntax check) and `shellcheck` if available.
+- On Windows, use WSL or a Linux VM to execute scripts that call `dnf` or assume root.
+
+What not to add or assume
+- There is no CI/test harness in the repo. Do not add CI or test frameworks without explicit approval.
 
 When modifying files
-- If you make non-trivial changes, include a short rationale in the commit message and add a one-line explanation to `README.MD`.
-- Prefer incremental PRs that change or add one script + tests/docs rather than large bulk edits.
+- Add a short rationale to the commit message and a one-line note in `README.MD` for any behavioral changes.
+- Prefer small, focused PRs (one script or one small change per PR).
 
-What not to assume
-- There are no CI, test runners, or build scripts in the repo currently; do not add a CI or a testing framework without prior confirmation from the owner.
+Contact + iteration
+- After making changes, request reviewer feedback in an issue or PR. If the maintainer is unresponsive, document your platform assumptions in `README.MD` and keep changes minimal.
 
-If something is missing
-- Ask the maintainer what shell(s) they expect and whether cross-platform support is required. If the maintainer is unresponsive, add files conservatively under `shellscript/` and document choices clearly in `README.MD`.
-
-Contact and iteration
-- After making initial changes, request feedback in an issue or PR and iterate on these instructions based on the owner's preferences.
+If helpful, I can also:
+- Add a script template file under `shellscript/` (header + `set -euo pipefail`) and a short `README.MD` section showing run examples.
+- Add a `shellcheck`-friendly CI job only after you confirm you want CI added.
 
 ---
 
-If you'd like, I can refine these instructions with: a sample script template, a sample `README.MD` section to add automatically when new scripts are added, or a basic PowerShell lint/test setup for future work. ✅
+This file documents only patterns discovered in the workspace. Tell me if you want me to add a script template and a small README snippet next.
