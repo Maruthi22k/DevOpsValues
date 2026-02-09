@@ -1,0 +1,10 @@
+- name: varible playbook
+  hosts: local
+  connection: local 
+  vars:
+    name: "Maruthirao"
+    job: "software engineer"
+    tasks: 
+      - name: print the name
+        ansible.builtin.debug:
+          msg: "my name is {{name}}"
