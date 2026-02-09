@@ -7,4 +7,4 @@
     tasks: 
       - name: print the name
         ansible.builtin.debug:
-          msg: "my name is {{name}}"
+          msg: "my name is {{name}},  and i am in {{job}}"
