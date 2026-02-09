@@ -4,4 +4,5 @@
   tasks:
     - name: ping the web server
       ansible.builtin.ping:
-    - name: install nginx
+        msg: "welcome to ansible"
+        
