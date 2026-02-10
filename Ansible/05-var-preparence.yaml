@@ -1,8 +1,8 @@
-- name: "varible prefarence
+- name: varible prefarence
   hosts: local
   connection: local 
   vars:
-    name: Maruthirao
+    name: "Maruthirao"
     job: "software engineer"
     tasks: 
       - name: print the name
