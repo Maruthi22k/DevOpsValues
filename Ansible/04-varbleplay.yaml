@@ -3,6 +3,6 @@
   connection: local
   
   tasks:
-    -name: Print varibles
-    ansible.buildin.Debug:
-     msg: "this is the ansible facts: {{ var }}"
+    - name: Print varibles
+      ansible.builtin.Debug:
+      msg: "this is the ansible facts: {{ COURSE_NAME }}"
