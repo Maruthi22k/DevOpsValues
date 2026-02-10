@@ -1,4 +1,4 @@
-- namne: varible declaration in playbook inventory variables 
+- name: varible declaration in playbook inventory variables 
   hosts: local
   connection: local
   
