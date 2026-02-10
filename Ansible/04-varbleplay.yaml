@@ -4,5 +4,5 @@
   
   tasks:
     - name: Print varibles
-      ansible.builtin.Debug:
+      ansible.builtin.debug:
         msg: "this is the ansible facts: {{ COURSE_NAME }}"
