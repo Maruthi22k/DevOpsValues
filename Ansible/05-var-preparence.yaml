@@ -1,0 +1,10 @@
+- name: "varible prefarence
+  hosts: local
+  connection: local 
+  vars:
+    name: "Maruthirao"
+    job: "software engineer"
+    tasks: 
+      - name: print the name
+        ansible.builtin.debug:
+          msg: "my name is {{name}},  and i am in {{job}}"
