@@ -1,0 +1,8 @@
+- namne: varible declaration in playbook inventory variables 
+  hosts: local
+  connection: local
+  
+  tasks:
+    -name: Print varibles
+    ansible.buildin.Debug:
+     msg: "this is the ansible facts: {{ var }}"
