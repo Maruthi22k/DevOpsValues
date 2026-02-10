@@ -1,7 +1,7 @@
 - name: varible declaration in playbook inventory variables 
   hosts: local
   connection: local
-  COURSE_NAME: "DevOps Course"
+  
   tasks:
     - name: Print varibles
       ansible.builtin.debug:
