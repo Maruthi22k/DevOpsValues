@@ -1,0 +1,8 @@
+- name: variable in Ansible 
+  hosts: local
+  connection: local
+  tasks:
+    - name: set a variables
+      ansible.builtin.debug:
+        msg:" this is a {{NAME}}, age is {{age}}"
+
