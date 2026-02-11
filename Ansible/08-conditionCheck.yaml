@@ -24,7 +24,7 @@
   tasks:
     - name: number of conditions less than 5
       ansible.builtin.debug:
-        msg: "Number of condtion is less then {{ Number_of_condtions }}""
+        msg: "Number of condtion is less then {{ Number_of_condtions }}"
       when: Number_of_condtions < 5
 
 
