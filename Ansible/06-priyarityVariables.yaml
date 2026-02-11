@@ -15,3 +15,8 @@
         name: "i am task variable"
       ansible.builtin.debug:
         msg: "my name is {{NAME}}"
+
+
+
+#### this playbook command to execute
+#### cd DevOpsValues/Ansible/ ---  ansible-playbook -i inventory.ini 06-priyarityVariables.yaml

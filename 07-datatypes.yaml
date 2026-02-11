@@ -1,0 +1,21 @@
+- name: datatypes in Ansible
+  hosts: local
+  connection: local
+  vars:
+    name: Maruthirao
+    age: 25
+    IS_LIVE: true
+    Details:
+      cource: Anisible
+      Duration: 3 hr
+    Topics:
+      - Ansible
+      - DevOps
+      - Automation
+  tasks:
+    - name: print the details
+      ansible.builtin.debug:
+        msg: "my name is {{name}}, age is {{age}}, i am live {{IS_LIVE}}, details are {{Details}}, topics are {{Topics}}"     
+
+
+    
