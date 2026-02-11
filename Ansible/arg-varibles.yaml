@@ -4,5 +4,5 @@
   tasks:
     - name: set a variables
       ansible.builtin.debug:
-        msg:" this is a {{NAME}}, age is {{age}}"
+      msg:" this is a {{NAME}}, age is {{age}}"
 
