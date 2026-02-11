@@ -27,6 +27,6 @@
         msg: "Number of condtion is less then {{ Number_of_condtions }}"
       when: Number_of_condtions < 5
 
+## condition check using 'when ' keyword
 
-
-## Command-- ansible-playbook -i inventory.ini 08-conditionCheck.yaml
+## Command to execute-- ansible-playbook -i inventory.ini 08-conditionCheck.yaml
