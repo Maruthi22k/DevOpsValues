@@ -1,0 +1,17 @@
+- name: priyarity of variables
+  hosts: local
+  connection: local
+  vars:
+    name: "This is playbook variable"
+  vars_files:
+    - bookDetail.yaml
+  vars_promt:
+    - name: NAME
+      prompt: "i am apromt varible"
+      private: no
+  tasks:
+    - name: print names
+      vars:
+        name: "i am task variable"
+      ansible.builtin.debug:
+        msg: "my name is {{NAME}}"
