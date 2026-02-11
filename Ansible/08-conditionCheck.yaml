@@ -9,6 +9,10 @@
       ansible.builtin.debug:
         msg: "this is live condsitions check"
       when: IS_LIVE == true
-
+  tasks:
+    - name: check the condition
+      ansible.builtin.debug:
+        msg: "this is live condsitions out check"
+      when: IS_LIVE == false
 
 ## Command-- ansible-playbook -i inventory.ini 08-conditionCheck.yaml
