@@ -1,0 +1,11 @@
+- name: set fact varibles
+  hosts: all
+  connection: local
+
+  tasks:
+    - name: Set a fact
+      set_fact:
+        app_name: "payment-service"
+
+    - debug:
+        msg: "Application name is {{ app_name }}"
