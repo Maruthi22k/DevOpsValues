@@ -5,4 +5,7 @@
     - name: get data from using ansible_facts
       ansible.builtin.debug:
         msg: "full data == {{ansible_facts}}" 
-       ## msg: "The OS is {{ ansible_distribution }} and the version is {{ ansible_distribution_version }}"
+        
+    - name: display OS and version
+      ansible.builtin.debug:
+        msg: "The OS is {{ ansible_distribution }} and the version is {{ ansible_distribution_version }}"
