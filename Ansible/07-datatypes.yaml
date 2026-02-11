@@ -18,7 +18,7 @@
         msg: "my name is {{name}}, age is {{age}}, i am live {{IS_LIVE}}, details are {{Details}}, topics are {{Topics}}"     
 
   tasks:
-    - name: print the details
+    - name: print the details all in new line
       ansible.builtin.debug:
         msg: | 
           name: {{name}}
