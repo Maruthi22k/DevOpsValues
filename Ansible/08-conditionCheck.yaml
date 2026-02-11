@@ -2,8 +2,8 @@
   hosts: local
   connection: local
   vars:
-    IS_LIVE: false
-
+    IS_LIVE: true
+    Number_of_condtions: 10
   tasks:
     - name: check the condition
       ansible.builtin.debug:
@@ -14,5 +14,13 @@
       ansible.builtin.debug:
         msg: "this is live condsitions out check"
       when: IS_LIVE == false
+
+  tasks:
+    - name: number of conditions check
+      ansible.builtin.debug:
+        msg: "Number of conditions is {{ Number_of_condtions }}"
+      when: Number_of_condtions > 5
+
+
 
 ## Command-- ansible-playbook -i inventory.ini 08-conditionCheck.yaml
