@@ -5,7 +5,7 @@
     name: "This is playbook variable"
   vars_files:
     - bookDetail.yaml
-  vars_promt:
+  vars_prompt:
     - name: NAME
       prompt: "i am apromt varible"
       private: no
