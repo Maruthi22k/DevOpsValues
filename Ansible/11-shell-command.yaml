@@ -39,4 +39,7 @@
   - name: print output of tomcat
     ansible.builtin.debug:
       msg: "{{ tomcat_output }}"
-      
+  
+  - name: Check tomcat process
+    ansible.builtin.shell: ps -ef | grep tomcat | grep -v grep
+    register: tomcat_status
