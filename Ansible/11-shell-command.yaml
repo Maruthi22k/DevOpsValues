@@ -35,3 +35,8 @@
         echo "Java is not installed. Installing Java..."
         # Add your Java installation commands here
       fi  
+    register: tomcat_output
+  - name: print output of tomcat
+    ansible.builtin.debug:
+      msg: "{{ tomcat_output }}"
+      
