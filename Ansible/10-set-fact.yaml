@@ -6,6 +6,6 @@
     - name: Set a fact
       set_fact:
         app_name: "payment-service"
-
-    - debug:
-        msg: "Application name is {{ app_name }}"
+        msg: "This is a message"
+   # - debug:
+   #     msg: "Application name is {{ app_name }} and message is {{ msg }}"
