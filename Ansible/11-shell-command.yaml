@@ -1,0 +1,37 @@
+- name: ansible command vs shell module
+  hosts: local
+  connection: local
+  tasks:
+  - name: command module test
+    #ansible.builtin.command: cat /etc/passwd | grep root
+    ansible.builtin.shell: cat /etc/passwd | grep root
+    register: users_output
+
+  - name: print output
+    ansible.builtin.debug:
+      msg: "{{ users_output }}"
+
+  - name: command module test
+    #ansible.builtin.command: cat /etc/passwd | grep root
+    ansible.builtin.shell: ls -ltr > files.txt
+    register: files_output
+
+  - name: print output of files
+    ansible.builtin.debug:
+      msg: "{{ files_output }}"
+
+
+## java version istall 
+  - name: Check Java version
+    ansible.builtin.command: java -version
+    register: java_output
+    ignore_errors: yes
+
+  - name: tamcat version istall 
+    ansible.builtin.shell: |
+      if [[ "{{ java_output.stderr }}" == *"version"* ]]; then
+        echo "Java is already installed."
+      else
+        echo "Java is not installed. Installing Java..."
+        # Add your Java installation commands here
+      fi  
