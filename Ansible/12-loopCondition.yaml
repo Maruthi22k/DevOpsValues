@@ -5,14 +5,11 @@
   tasks:
     - name: name mysql project
       ansible.builtin.debug:
-        msg: "this value {{NAME}}"
-
+        msg: "this value {{item}}"
       loop:
        - Maruthirao
        - Anusha
        - SaiSidvik
        - Sridhartri
-
-
 
   #  - name:     
