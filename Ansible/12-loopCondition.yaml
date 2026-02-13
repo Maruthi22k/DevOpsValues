@@ -1,0 +1,8 @@
+- name: loop Condition files
+  hosts: local
+  connection: local
+
+  tasks:
+    - name: name mysql project
+      ansible.builtin.debug:
+        msg: "this value {{NAME}}"
