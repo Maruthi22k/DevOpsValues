@@ -4,7 +4,8 @@
   tasks:
   - name: command module test
     #ansible.builtin.command: cat /etc/passwd | grep root
-    ansible.builtin.shell: cat /etc/passwd | grep root
+    ansible.builtin.shell: cat /etc/passwd | grep root     
+    ## this commands values we will store in "users_output"
     register: users_output
 
   - name: print output
@@ -13,6 +14,7 @@
 
   - name: command module test
     #ansible.builtin.command: cat /etc/passwd | grep root
+        ## this commands values we will store in "files_output"
     ansible.builtin.shell: ls -ltr > files.txt
     register: files_output
 
