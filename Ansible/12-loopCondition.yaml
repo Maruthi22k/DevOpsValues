@@ -1,15 +1,12 @@
-- name: loop Condition files
+- name: Loop names 
   hosts: local
   connection: local
-
-  tasks:
-    - name: name mysql project
+  tasks: 
+    - name: Loopin values
       ansible.builtin.debug:
-        msg: "this value {{item}}"
-      loop:
-       - Maruthirao
-       - Anusha
-       - SaiSidvik
-       - Sridhartri
-
-  #  - name:     
+        msg: " this is value {{NAME}}"
+      loop: 
+      - maruthiraok
+      - Anusha
+      - SaiSidvik
+      - Sridhatri
