@@ -6,3 +6,13 @@
     - name: name mysql project
       ansible.builtin.debug:
         msg: "this value {{NAME}}"
+
+      loop:
+       - Maruthirao
+       - Anusha
+       - SaiSidvik
+       - Sridhartri
+
+
+
+  #  - name:     
