@@ -4,6 +4,7 @@
   tasks: 
     - name: Loopin values
       ansible.builtin.debug:
+#        msg: " this is value {{NAME}}"
         msg: " this is value {{item}}"
       loop: 
       - maruthiraok
