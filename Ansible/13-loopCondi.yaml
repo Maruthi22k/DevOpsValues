@@ -1,13 +1,14 @@
-- name: install packeage
+- name: Install packages
   hosts: local
   connection: local
   become: yes
+
   tasks:
-    - name: install packages
-      ansible.builtin.packages:
+    - name: Install web and database packages
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
         - httpd
         - nginx
-        - sql
+        - mariadb-server
