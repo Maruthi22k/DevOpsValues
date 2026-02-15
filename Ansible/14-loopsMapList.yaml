@@ -1,0 +1,23 @@
+- name: "Looping with map and list"
+  hosts: local
+  connection: local
+  tasks:
+    - name: Looping with map and list
+      ansible.builtin.debug:
+        msg: " this is value {{item.key}} and {{item.value}}"
+      loop: "{{ dict(names, ages) | dict2items }}"
+
+  vars:
+    names:
+      - Maruthirao
+      - Anusha
+      - SaiSidvik
+      - Sridhatri
+
+    ages:
+      - 25
+      - 24
+      - 22
+      - 23
+
+    ##### Command--  ansible-playbook -i inventory.ini 14-loopsMapList.yaml

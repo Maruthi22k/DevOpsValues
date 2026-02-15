@@ -12,3 +12,25 @@
         - httpd
         - nginx
         - mariadb-server
+
+
+    ##### Command--  ansible-playbook -i inventory.ini 13-loopCondi.yaml
+
+  tasks:
+    - name: Install packages on RedHat
+      ansible.builtin.package:
+        name:
+          - httpd
+          - mariadb-server
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install packages on Debian
+      ansible.builtin.package:
+        name:
+          - apache2
+          - mysql-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    ##### Command--  ansible-playbook -i inventory.ini 13-loopCondi.yaml
