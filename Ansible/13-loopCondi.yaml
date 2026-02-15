@@ -1,0 +1,13 @@
+- name: install packeage
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+    - name: install packages
+      ansible.builtin.packages:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - httpd
+        - nginx
+        - sql
