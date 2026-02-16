@@ -5,4 +5,4 @@
   tasks:
     - name: filter values in ansible
       ansible.builtin.debug:
-        msg: "this maruthirao is {{item}}"
+        msg: "this maruthirao is {{item | upper}}"
