@@ -17,7 +17,7 @@
         name: "{{item.name}}"
         state: "{{item.state}}"
       loop:
-        - {name: "apache2", state: "present"}
+        - {name: "apache2", state: "absent"}
         - {name: "curl", state: "present"}
       when: ansible_os_family == "Debian"
 
