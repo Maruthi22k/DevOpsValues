@@ -2,7 +2,7 @@
   hosts: local
   connection: local
   tasks: 
- /*   - name: Loopin values
+    - name: Loopin values
       ansible.builtin.debug:
       # msg: " this is value {{NAME}}"
         msg: " this is value {{item}}"
@@ -12,7 +12,7 @@
       - SaiSidvik
       - Sridhatri
 
-**/
+
     - name: Looping with items
       ansible.builtin.debug:
         name: " this is value {{item.name}}"
