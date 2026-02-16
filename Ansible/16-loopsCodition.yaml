@@ -1,0 +1,12 @@
+- name: loops condition
+  hosts: local
+  connection: local
+  tasks:
+    - name: loops and condtions
+      ansible.builtin.package:
+        name: "{{item.name}}"
+        state: "{{item.state}}"
+        loop:
+        - { name: "nginx", state: "present" }
+        - { name: "zip", state: "present"}
+      when: ansible_os_family == "RedHat"
