@@ -1,0 +1,9 @@
+- name: Configure loop and conditional tasks in Ansible
+  hosts: locall
+  connection: local
+  tasks:
+    - name: loops and conditions
+      ansible.builtin.debug:
+        msg: "This is value {{item}}"
+      loop: "{{ range(1, 11) | list }}"
+      when: item % 2 == 0
