@@ -1,7 +1,7 @@
 - name: Install packages condition
   hosts: local
   connection: local
-  become: yes
+ # become: yes
   tasks:
     - name: loops and condtions
       ansible.builtin.package:
