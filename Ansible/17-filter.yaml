@@ -6,3 +6,4 @@
     - name: filter values in ansible
       ansible.builtin.debug:
         msg: "this maruthirao is {{ GREETINGS | default('welcome Maruthiraok')}}"
+        msg: "this maruthirao is {{ GREETINGS | default(5)}}"
