@@ -4,10 +4,19 @@
   tasks: 
     - name: Loopin values
       ansible.builtin.debug:
-#        msg: " this is value {{NAME}}"
+      # msg: " this is value {{NAME}}"
         msg: " this is value {{item}}"
       loop: 
       - maruthiraok
       - Anusha
       - SaiSidvik
       - Sridhatri
+
+
+    - name: Looping with items
+      ansible.builtin.debug:
+        name: " this is value {{item.name}}"
+        state: "{{item.state}}"
+      loop:
+      - { name: "nginx", state: "present" }
+      - { name: "mysql", state: "absent"}
