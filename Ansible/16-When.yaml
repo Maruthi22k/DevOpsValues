@@ -1,0 +1,26 @@
+- name: Install packages condition
+  hosts: local
+  connection: local
+ # become: yes
+  tasks:
+    - name: loops and condtions
+      ansible.builtin.package:
+        name: "{{item.name}}"
+        state: "{{item.state}}"
+      loop:
+        - { name: "nginx", state: "present" }
+        - { name: "zip", state: "present"}
+      when: ansible_os_family == "RedHat"
+
+    - name: Debian packages
+      ansible.builtin.package:
+        name: "{{item.name}}"
+        state: "{{item.state}}"
+      loop:
+        - {name: "apache2", state: "present"}
+        - {name: "curl", state: "present"}
+      when: ansible_os_family == "Debian"
+
+
+## We use "when" condition to ensure OS-specific tasks run only on compatible systems, 
+## avoiding package name mismatches and playbook failures in multi-OS environments. 
