@@ -5,5 +5,4 @@
   tasks:
     - name: filter values in ansible
       ansible.builtin.debug:
-        msg: "this maruthirao is {{ GREETINGS }}"
-        
+        msg: "this maruthirao is {{ GREETINGS | default('welcome Maruthiraok')}}"
