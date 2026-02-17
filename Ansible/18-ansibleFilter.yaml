@@ -9,3 +9,10 @@
     - name: ansible filters using dynamic variables read 
       ansible.builtin.debug:
         msg: "topics are {{ topics.split(',') | list}}"
+
+## set_fact is used to create a new variable and assign a value to it
+# bookDetail.yaml values to store in from_yaml and retun to store in mylist variable
+
+    - name: ansible filters using set_fact
+      ansible.builtin.set_fact:    
+        mylist: "{{lookup('file', bookDetail.yaml) | from_yaml}}"
