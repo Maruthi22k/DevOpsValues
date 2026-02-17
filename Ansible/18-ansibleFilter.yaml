@@ -10,10 +10,16 @@
       ansible.builtin.debug:
         msg: "topics are {{ topics.split(',') | list}}"
 
-## set_fact is used to create a new variable and assign a value to it
+## set_fact is used to create a new variable and assign a value to it dynamically during playbook execution. It allows you to define variables on the fly based on the results of tasks or other conditions. In this example, 
+# we are using set_fact to create a new variable called mylist and assigning it the value obtained from reading a YAML file (bookDetail.yaml) and converting it into a list using the from_yaml filter. 
+# This allows us to work with the data from the YAML file as a variable in our playbook.
 # bookDetail.yaml values to store in from_yaml and retun to store in mylist variable
 
     - name: ansible filters using set_fact
       ansible.builtin.set_fact:    
         mylist: "{{lookup('file', 'bookDetail.yaml') | from_yaml}}"
     #    msg : " mylists set to {{ mylist }}"
+
+    - name: yaml to json convert
+      ansible.builtin.debug:
+        msg: "this is myfile {{mylist | to_json}}"
