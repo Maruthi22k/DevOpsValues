@@ -15,4 +15,4 @@
 
     - name: ansible filters using set_fact
       ansible.builtin.set_fact:    
-        mylist: "{{lookup('file', bookDetail.yaml) | from_yaml}}"
+        mylist: "{{lookup('file', 'bookDetail.yaml') | from_yaml}}"
