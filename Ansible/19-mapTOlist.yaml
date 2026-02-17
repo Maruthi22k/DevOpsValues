@@ -1,0 +1,20 @@
+- name: map to list convert in ansible
+  hosts: local
+  connection: local
+
+  tasks:
+    - name: covert to map to list
+      ansible.builtin.debug:
+       # msg: "The list of running services is: {{ services | dict2items | selectattr('value', 'equalto', 'running') | list }}"
+
+  vars:
+    services:
+      web: running
+      database: stopped
+      cache: running
+      backup: stopped
+  tasks:
+    - name: Process only running services
+      debug:
+        msg: "{{ item.key }} is {{ item.value }}"
+      loop: "{{ services | dict2items | selectattr('value', 'equalto', 'running') | list }}"
