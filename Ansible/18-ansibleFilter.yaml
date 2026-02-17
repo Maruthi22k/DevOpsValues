@@ -16,4 +16,4 @@
     - name: ansible filters using set_fact
       ansible.builtin.set_fact:    
         mylist: "{{lookup('file', 'bookDetail.yaml') | from_yaml}}"
-        msg : "mylist is set to {{ mylist }}"
+    #    msg : " mylists set to {{ mylist }}"
