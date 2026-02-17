@@ -23,3 +23,12 @@
     - name: yaml to json convert
       ansible.builtin.debug:
         msg: "this is myfile {{mylist | to_json}}"
+
+    - name: json to yaml convert
+      ansible.builtin.set_fact:
+      #  myyaml: "{{lookup('ansible.builtin.to_json', mylist) | from_json | to_yaml}}"
+        myyaml: "{{lookup('file', 'ansible_facts.json') | from_json }}"
+   
+    - name: json to yaml convert
+      ansible.builtin.debug:
+        msg: "this is myyaml {{myyaml | to_yaml}}"
