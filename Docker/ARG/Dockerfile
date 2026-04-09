@@ -1,0 +1,3 @@
+
+ARG ALMA_VERSION=9
+FROM almalinux:${ALMA_VERSION}
