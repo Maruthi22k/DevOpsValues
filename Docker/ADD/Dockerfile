@@ -4,6 +4,6 @@ ADD https://github.com/Maruthi22k/PythonRepo/blob/main/.github/workflows/main.ym
 ## RUN cat /tmp/note.txt
 ## option two this one is for local file
 
-ADD tar_file.tar.gz /tmp/
-
+## ADD tar_file.tar.gz /tmp/
+COPY tar_file.tar.gz /tmp/
 CMD ["sleep", "100"]
