@@ -1,0 +1,6 @@
+docker build -t mongodb:v1 .
+docker run -d --name=mongodb mongodb:v1
+docker exec -it 85a974f15f12 bash
+
+## after inside of exec -it ,type mongosh
+mongosh
