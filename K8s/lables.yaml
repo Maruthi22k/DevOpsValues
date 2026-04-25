@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-lable-pod
+  labels:
+    name: frentend
+    environmment: dev
+    project: roboshop
+    version: 1.0
