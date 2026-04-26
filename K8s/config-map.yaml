@@ -1,7 +1,7 @@
 apiVersion: v1
-kind: Pod
+kind: configMap
 metadata:
-  name: config-map
+  name: configmap
 data:
   Home: "India"
   User: "admin"
