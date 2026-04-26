@@ -13,3 +13,7 @@ spec:
         requests:
           memory: "64Mi"
           cpu: "250m"
+
+### This file container is used to create a pod with resource limits and requests.
+## The container will be limited to using 128Mi of memory and 500m of CPU, 
+## because container does not have miss use resources, so we are giving it some resource limits.
