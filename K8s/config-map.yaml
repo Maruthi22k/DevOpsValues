@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name:config-map
+data:
+  Home: "India"
+  User: "admin"
+  Password: "password"
