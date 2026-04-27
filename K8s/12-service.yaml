@@ -4,8 +4,10 @@ metadata:
   name: app-service
 spec:
   selector:
-    project: IKANO
-    user: devops
+    project: JCS-Global-service
+    user: maruthi
+    role: project-lead
+
   ports:
     - protocol: TCP
       port: 80
