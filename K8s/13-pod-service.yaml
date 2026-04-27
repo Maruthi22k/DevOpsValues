@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-service
+  labels:
+    project: JCS-Global-service
+    user: maruthi
+    role: project-lead
+spec:
+  containers:
+    - name: ngnix-container
+      image: nginx
+      ports:
+        - containerPort: 80
