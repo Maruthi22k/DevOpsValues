@@ -1,16 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: service-nodeport
 
   ## selector is used to select the pods which are going to be part of this service
   ## based on this selector service will route the traffic to the pods which are selected by this selector
 spec:
+  type: Nodeport    ## this is used to expose the service to the outside world, so that we can access the service from outside of the cluster
   selector:
     project: JCS-Global-service
     user: maruthi
     role: project-lead
-
+    purpose: node-port  ## this is used to identify the purpose of this service, so that we can easily identify the service which is used for node-port
   ports:
     - protocol: TCP
       port: 80
