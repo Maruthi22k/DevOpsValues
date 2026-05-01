@@ -6,7 +6,7 @@ metadata:
   ## selector is used to select the pods which are going to be part of this service
   ## based on this selector service will route the traffic to the pods which are selected by this selector
 spec:
-  type: Nodeport    ## this is used to expose the service to the outside world, so that we can access the service from outside of the cluster
+  type: NodePort    ## this is used to expose the service to the outside world, so that we can access the service from outside of the cluster
   selector:
     project: JCS-Global-service
     user: maruthi
