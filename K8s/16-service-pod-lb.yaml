@@ -14,3 +14,6 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30070
+
+## This is used to specify the port on which the service is exposed to the outside world,
+## so that we can access the service from outside of the cluster using this port

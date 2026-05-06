@@ -11,3 +11,7 @@ spec:
   containers:
     - name: nginx-container
       image: nginx
+
+
+## the labels specified in the pod are used to select the pods for the service, 
+## so that the service can route the traffic to the selected pods.
