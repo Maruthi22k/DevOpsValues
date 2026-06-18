@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    project: JCS-Global-service
+    user: maruthi
+    role: project-lead
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: JCS-Global-service
+      user: maruthi
+      role: project-lead
+  template:
+    metadata:
+      labels:
+        project: JCS-Global-service
+        user: maruthi
+        role: project-lead
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+          ports:
+            - containerPort: 80
+            
