@@ -1,12 +1,11 @@
 apiVersion: v1
-kind: namespace
+kind: Namespace
 metadata:
-  name: my-namespace
-  namespace: dev
-
+  name: ikano-name
+  namespace: ikano
 spec:
   containers:
-  - name: my-name-container
+  - name: nginx
     image: nginx
     ports:
     - containerPort: 80
