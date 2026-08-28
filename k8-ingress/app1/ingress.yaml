@@ -1,0 +1,103 @@
+apiVersion: networking.k8s.io/v1
+kind: Deployment
+metadata:
+  name: app1-deployment
+  labels:
+    app: app1
+    project: JCSGlobal
+    environment: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app1
+      project: JCSGlobal
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: app1
+        project: JCSGlobal
+        environment: dev
+    spec:
+      containers:
+      - name: app1
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1-service
+  labels:
+    app: app1
+    project: JCSGlobal
+    environment: dev
+spec:
+  selector:
+    app: app1
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1-ingress
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:160885265516:certificate/a1f7483d-ee32-446c-a9b9-e7fdcca18ff6
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/tags: Environment=dev,Project=JCSGlobal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: JCSGlobal
+  labels:
+    app: app1
+    project: JCSGlobal
+    environment: dev
+spec:
+  ingressClassName: alb
+  rules:
+  - host: app1.jcsglobal.com   ## Replace with your actual domain name  exaple: app1.jcsglobal.com
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: app1-service
+            port:
+              number: 80  
+
+
+
+## Two app1 and app2 can use same ALB Ingress Controller with different target groups and rules. 
+## Hear i am using Ingress controller is alb.ingress.kubernetes.io/group.name: JCSGlobal, so that both apps can share the same ALB Ingress Controller. 
+## and hear i am using target group name as app1-service and app2-service, so that both apps can have different target groups.  
+## alb.ingress.kubernetes.io/group.name: JCSGlobal
+
+
+## why use annotations for ALB Ingress Controller?
+# The annotations in the ALB Ingress Controller are used to configure specific settings 
+#and behaviors for the Application Load Balancer (ALB) that is created to manage incoming traffic to your Kubernetes services. Here’s why they are important:
+
+# for extranal access: The annotations allow you to specify how the ALB should handle incoming traffic, including which ports to listen on, whether to use HTTPS, and which SSL/TLS certificate to use for secure connections. 
+# Within cluster we can use labels for external access: The annotations 
+
+
+#Ingress flow: The Ingress resource defines rules for routing external HTTP/HTTPS traffic to the appropriate services within the Kubernetes cluster. 
+#The annotations help configure the ALB to ensure that traffic is directed correctly based on the specified host and path rules.
+
+# ALB to listener to role to target group to service to pod: 
+
+
+## ----------
+
+## use commands to create the deployment, service, and ingress resources in Kubernetes:
+# "" kubectl apply -f k8-ingress/app1/ingress.yaml
+# kubectl get ingress app1-ingress
+# kubectl describe ingress app1-ingress
+# kubectl get svc app1-service
+# kubectl get deployment app1-deployment ""

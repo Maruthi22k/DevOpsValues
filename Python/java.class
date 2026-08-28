@@ -1,0 +1,16 @@
+class Validtaion{
+
+public void revars(){
+str = "maruthi welcome";
+  revarsVal = ;
+  
+  for (int i<=str; i=0; i--){
+    revarsVal+=1;
+  }
+}
+
+    public static void main(){
+       Validtaion valid =new Validtaion();
+          valid.revars();
+    } 
+}

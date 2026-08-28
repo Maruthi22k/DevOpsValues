@@ -11,12 +11,12 @@ while True:
     print(c)
     time.sleep(s)
  #   i = (i + 1) % len(lights)
-    time.sleep(s)
     if i== len(lights)-1:
         i=0
     else:
         i+=1
-
+## c,s = lights[i]  ## This will get the color and the duration of the current light, use of s is to sleep for the duration of the current light, so
+## that the traffic light will change after the specified duration.
 
 # import time
 # import itertools 

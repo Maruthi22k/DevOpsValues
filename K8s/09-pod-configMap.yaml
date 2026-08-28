@@ -10,6 +10,6 @@ spec:
     - configMapRef:
         name: configmap
 
-
+## envFrom is used to specify the source of environment variables for the container. In this case, it is referencing a ConfigMap named "configmap". The environment variables defined in the ConfigMap will be available to the nginx container when it runs.
 ## This pod is using a ConfigMap named "configmap" to set environment variables for the nginx container.
 ## The ConfigMap contains key-value pairs that can be used to configure the application running in the container.
