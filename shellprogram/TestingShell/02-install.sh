@@ -17,6 +17,7 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     echo "Installing Nginx ... SUCCESS"
+    echo "print the value of the last executed command: $?"
 fi
 
 # dnf install mysql -y
@@ -26,6 +27,7 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     echo "Installing MySQL ... SUCCESS"
+    echo "print the value of the last executed command: $?"
 fi
 
 # dnf install nodejs -y
@@ -35,4 +37,5 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     echo "Installing nodejs ... SUCCESS"
+    echo "print the value of the last executed command: $?"
 fi
