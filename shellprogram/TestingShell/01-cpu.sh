@@ -1,6 +1,6 @@
 
 #!/bin/bash
-echo "The current running script is: $0"
+echo "The current running script is: $0 and  $#"
 echo "Hello, $1!"
 
 if [[ $# -ne 2 ]];then
