@@ -18,8 +18,8 @@ VALIDATE $? "Disabling Nginx ... SUCCESS"
 
 VALIDATE (){
     if [$1 -eq 0];then
-        echo "niginx service is running"
+        echo "$2 ... SUCCESS"
     else
-        echo "niginx service is not running"
+        echo "$3 ... FAILURE"
     fi
 }
