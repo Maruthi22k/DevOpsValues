@@ -24,13 +24,22 @@ VALIDATE (){
 }
 
 
-dnf list installed | grep nginx  ## meaning of this command is to check whether nginx is installed or not. If it is installed then it will return the package name and version otherwise it will return nothing.
-dnf install nginx -y
+dnf list installed nginx  ## meaning of this command is to check whether nginx is installed or not. If it is installed then it will return the package name and version otherwise it will return nothing.
+
 if [$? -ne 0];then
-    echo -e "$R Installing Nginx ... FAILURE $N"
+    dnf install nginx -y
     VALIDATE $? "Installing Nginx ... FAILURE"
     exit 1
 else
     echo -e "$G Installing already installed Nginx ...  $N"
-    VALIDATE 0 "Installing Nginx ... SUCCESS"
 fi
+
+dnf list installed almalinux-release
+if [$? -ne 0];then
+    dnf install almalinux-release -y
+    VALIDATE $? "Installing Almalinux Release ... FAILURE"
+    exit 1
+else
+    VALIDATE 0 "Installing already installed Almalinux Release ... SUCCESS"
+fi
+
