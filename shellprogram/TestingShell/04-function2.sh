@@ -13,8 +13,8 @@ VALIDATION (){
         echo "$2 ... SUCCESS"
     else
         echo "$2 ... FAILURE"
+    fi
 }
-
 
 dnf install nginx -y
 VALIDATION $? "Installing Nginx"
