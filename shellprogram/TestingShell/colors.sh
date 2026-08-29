@@ -9,4 +9,4 @@ C=\e[36m  ## Cyan color code
 W=\e[37m  ## White color code
 
 USERID=$(id -u)
-echo -e "${C}print the current user id: $USERID${W}"
+echo -e "$R print the current user id: $USERID $N"
