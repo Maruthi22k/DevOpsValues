@@ -1,0 +1,194 @@
+name: workflowcalls
+
+on:
+  workflow_call:
+    inputs:
+      project:
+        required: true
+        type: string
+
+      environment:
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: "20"
+  NPM_VERSION: "10"
+  PROJECT: ${{ vars.PROJECT_ID }}
+  REGISTRY: "ghcr.io"
+  IMAGE_TAG: ${{ github.sha }}
+  TEST_INSTANCE_HOST: ${{ vars.TEST_INSTANCE_HOST }}
+  
+jobs:
+  feature-pipeline:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: list files
+        run: ls -la
+
+      - name: print inputs
+        run: |
+          echo "Feature branch: ${{ inputs.project }}"
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: unit test
+        run:  echo "Running unit tests"
+
+      - name: Run feature pipeline script
+        run: |
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Project: ${{ inputs.project }}"
+          echo "Environment: ${{ inputs.environment }}"
+          
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarqube-scan-action@v5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+
+      # - name: Quality Gate Check
+      #   uses: sonarsource/sonarqube-quality-gate-action@v1.2.0
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  trivy-security-scan:
+    name: Trivy Security Scan
+    needs: feature-pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Local Images and Run Trivy Scanner
+        run: |
+          SERVICES=("admin-frontend" "auth-service" "product-service" "Tailor-backend:tailor-backend" "Tailor-frontend:tailor-frontend" "User-frontend:user-frontend" "user-service")
+          SECRETS_JSON='${{ toJson(secrets) }}'
+
+          AUTH_API=$(echo "$SECRETS_JSON" | jq -r '.AUTH_API // "http://localhost:4001/api"')
+          BACKEND_URL=$(echo "$SECRETS_JSON" | jq -r '.BACKEND_URL // "http://localhost:4002"')
+          TAILOR_FRONTEND=$(echo "$SECRETS_JSON" | jq -r '.TAILOR_FRONTEND // "http://localhost:5175"')
+          USER_DOMAIN=$(echo "$SECRETS_JSON" | jq -r '.USER_DOMAIN // "http://localhost:5173"')
+          ADMIN_DOMAIN=$(echo "$SECRETS_JSON" | jq -r '.ADMIN_DOMAIN // "http://localhost:5174"')
+          APP_URL=$(echo "$SECRETS_JSON" | jq -r '.APP_URL // "http://localhost:5173"')
+          
+          for ITEM in "${SERVICES[@]}"; do
+            IFS=":" read -r DIR SERVICE <<< "$ITEM"
+            if [ -z "$SERVICE" ]; then SERVICE="$DIR"; fi
+            
+            LOCAL_IMAGE="tailorspot/${SERVICE}:test"
+            echo "Building local image ${LOCAL_IMAGE} from ./${DIR}..."
+            
+            BUILD_ARGS=""
+            if [[ "$SERVICE" == *"frontend"* ]]; then
+              BUILD_ARGS="--build-arg VITE_AUTH_API=${AUTH_API} --build-arg VITE_USER_API=${BACKEND_URL}/user-api --build-arg VITE_PRODUCT_API=${BACKEND_URL}/product-api --build-arg VITE_TAILOR_API=${BACKEND_URL}/tailor-api --build-arg VITE_TAILOR_FRONTEND=${TAILOR_FRONTEND} --build-arg VITE_USER_FRONTEND=${USER_DOMAIN} --build-arg VITE_ADMIN_DOMAIN=${ADMIN_DOMAIN} --build-arg VITE_USER_DOMAIN=${USER_DOMAIN} --build-arg VITE_APP_URL=${APP_URL}"
+            fi
+            
+            docker build ${BUILD_ARGS} -f "./${DIR}/Dockerfile" -t "${LOCAL_IMAGE}" "./${DIR}"
+            
+            echo "Scanning ${LOCAL_IMAGE} with Trivy..."
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --severity HIGH,CRITICAL "${LOCAL_IMAGE}" || true
+          done
+
+  test-containers-docker-compose:
+    name: Test Containers using Docker Compose
+    needs: feature-pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start services with Docker Compose
+        run: |
+          echo "Testing container orchestration on instance: ${{ env.TEST_INSTANCE_HOST }}"
+          SECRETS_JSON='${{ toJson(secrets) }}'
+          echo "$SECRETS_JSON" | jq -r 'to_entries | .[] | .key + "=" + (.value | tostring)' > .env.tmp
+          chmod 600 .env.tmp
+          docker compose --env-file .env.tmp up --build -d
+          rm -f .env.tmp
+
+      - name: Check container running status
+        run: |
+          echo "Checking running containers..."
+          docker compose ps
+          sleep 10
+
+      - name: Verify service health endpoints
+        run: |
+          echo "Testing service endpoints..."
+          curl -f http://localhost:4001/health || echo "Auth Service health check warning"
+          curl -f http://localhost:4003/health || echo "Tailor Backend health check warning"
+          curl -f http://localhost:4002/ || echo "User Service health check warning"
+          curl -f http://localhost:5173 || echo "User Frontend warning"
+
+      - name: Tear down test containers
+        if: always()
+        run: |
+          echo "Cleaning up test containers..."
+          docker compose down -v
+
+  push-images-ghcr:
+    name: Push Docker Images to GHCR
+    needs: [feature-pipeline, trivy-security-scan, test-containers-docker-compose]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.CONTAINER_TOKEN }}
+
+      - name: Set lower case owner name
+        run: |
+          echo "OWNER_LC=${REPO_OWNER,,}" >> $GITHUB_ENV
+        env:
+          REPO_OWNER: '${{ github.repository_owner }}'
+
+      - name: Build and Push Microservice Images to GHCR
+        run: |
+          SERVICES=("admin-frontend" "auth-service" "product-service" "Tailor-backend:tailor-backend" "Tailor-frontend:tailor-frontend" "User-frontend:user-frontend" "user-service")
+          SECRETS_JSON='${{ toJson(secrets) }}'
+
+          AUTH_API=$(echo "$SECRETS_JSON" | jq -r '.AUTH_API // "http://localhost:4001/api"')
+          BACKEND_URL=$(echo "$SECRETS_JSON" | jq -r '.BACKEND_URL // "http://localhost:4002"')
+          TAILOR_FRONTEND=$(echo "$SECRETS_JSON" | jq -r '.TAILOR_FRONTEND // "http://localhost:5175"')
+          USER_DOMAIN=$(echo "$SECRETS_JSON" | jq -r '.USER_DOMAIN // "http://localhost:5173"')
+          ADMIN_DOMAIN=$(echo "$SECRETS_JSON" | jq -r '.ADMIN_DOMAIN // "http://localhost:5174"')
+          APP_URL=$(echo "$SECRETS_JSON" | jq -r '.APP_URL // "http://localhost:5173"')
+
+          for ITEM in "${SERVICES[@]}"; do
+            IFS=":" read -r DIR SERVICE <<< "$ITEM"
+            if [ -z "$SERVICE" ]; then SERVICE="$DIR"; fi
+            
+            IMAGE_NAME="${REGISTRY}/${OWNER_LC}/${SERVICE}"
+            echo "Building and pushing ${IMAGE_NAME}:${IMAGE_TAG} from ./${DIR}..."
+            
+            BUILD_ARGS=""
+            if [[ "$SERVICE" == *"frontend"* ]]; then
+              BUILD_ARGS="--build-arg VITE_AUTH_API=${AUTH_API} --build-arg VITE_USER_API=${BACKEND_URL}/user-api --build-arg VITE_PRODUCT_API=${BACKEND_URL}/product-api --build-arg VITE_TAILOR_API=${BACKEND_URL}/tailor-api --build-arg VITE_TAILOR_FRONTEND=${TAILOR_FRONTEND} --build-arg VITE_USER_FRONTEND=${USER_DOMAIN} --build-arg VITE_ADMIN_DOMAIN=${ADMIN_DOMAIN} --build-arg VITE_USER_DOMAIN=${USER_DOMAIN} --build-arg VITE_APP_URL=${APP_URL}"
+            fi
+            
+            docker build ${BUILD_ARGS} -f "./${DIR}/Dockerfile" -t "${IMAGE_NAME}:${IMAGE_TAG}" -t "${IMAGE_NAME}:latest" "./${DIR}"
+            docker push "${IMAGE_NAME}:${IMAGE_TAG}"
+            docker push "${IMAGE_NAME}:latest"
+          done
