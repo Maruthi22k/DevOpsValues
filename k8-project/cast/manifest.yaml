@@ -16,10 +16,10 @@ data:
 ---
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: cart
   namespace: kube-project
-
   labels:
     app: cart
     project: cart-dev
@@ -27,48 +27,52 @@ metadata:
 
 spec:
   replicas: 2
+
   selector:
     matchLabels:
       app: cart
       project: cart-dev
       environment: dev
 
-      template:
-        metadata:
-          labels:
-            app: cart
-            project: cart-dev
-            environment: dev
+  template:
+    metadata:
+      labels:
+        app: cart
+        project: cart-dev
+        environment: dev
 
-            spec:
-              containers:
-                - name: cart-dev-cont
-                  image: nginx:latest
-                  imagePullPolicy: Always   ## always pull the image from dockerhub latest tag
-                  envFrom:                  
-                    configMapref:
-                      name: cart-config
-                  ports:
-                    - name: liveness-port
-                      containerPort: 8080
-                      protocol: TCP
-                  resources:
-                    requests:
-                      memory: "64Mi"
-                      cpu: "250m"
-                    limits:
-                      memory: "128Mi"
-                      cpu: "500m"
-                  readinessProbe:
-                    httpGet: 
-                      path: /health
-                      port: liveness-port
-                  
-                  livenessProbe:
-                    httpGet:
-                      path: /health
-                      port: liveness-port
+    spec:
+      containers:
+        - name: cart-dev-cont
+          image: nginx:latest
+          imagePullPolicy: Always
 
+          envFrom:
+            - configMapRef:
+                name: cart-config
+
+          ports:
+            - name: liveness-port
+              containerPort: 8080
+              protocol: TCP
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: liveness-port
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: liveness-port
 ---
 apiVersion: v1
 kind: Service
