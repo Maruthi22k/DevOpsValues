@@ -28,7 +28,7 @@ metadata:
 spec:
   replicas: 2
   selector:
-    matchlabels:
+    matchLabels:
       app: cart
       project: cart-dev
       environment: dev
@@ -90,19 +90,40 @@ spec:
       targetPort: 8080 # container port
 
 ---
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: cart-hpa
+#   namespace: kube-project
+# spec:
+#   scaleTargetRef:    ## use of scaleTargetRef is to specify the target resource that the HPA will scale. In this case, it is referring to the Deployment named "cart" in the "kube-project" namespace. The HPA will monitor the CPU utilization of the pods managed by this Deployment and adjust the number of replicas accordingly, within the specified minimum 
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: cart
+#   minReplicas: 2
+#   maxReplicas: 10
+#   targetCPUUtilizationPercentage: 80
+
+
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cart-hpa
-  namespace: kube-project
+  name: cart
 spec:
-  scaleTargetRef:    ## use of scaleTargetRef is to specify the target resource that the HPA will scale. In this case, it is referring to the Deployment named "cart" in the "kube-project" namespace. The HPA will monitor the CPU utilization of the pods managed by this Deployment and adjust the number of replicas accordingly, within the specified minimum 
+  scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: cart
   minReplicas: 2
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
-  
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
 
   ## Eplanations: HPA (Horizontal Pod Autoscaler) is a Kubernetes resource that automatically scales the number of pods in a deployment based on observed CPU utilization or other select metrics. In this case, the HPA is configured to monitor the CPU usage of the "cart" deployment and adjust the number of replicas between a minimum of 2 and a maximum of 10, aiming to maintain an average CPU utilization of 80%.
+
+
