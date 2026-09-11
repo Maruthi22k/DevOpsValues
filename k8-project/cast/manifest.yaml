@@ -46,10 +46,13 @@ spec:
                 - name: cart-dev-cont
                   image: nginx:latest
                   imagePullPolicy: Always   ## always pull the image from dockerhub latest tag
+                  envFrom:                  
+                    configMapref:
+                      name: cart-config
                   ports:
                     - name: liveness-port
-                      containerport: 8080
-                     
+                      containerPort: 8080
+                      protocol: TCP
                   resources:
                     requests:
                       memory: "64Mi"
@@ -58,12 +61,12 @@ spec:
                       memory: "128Mi"
                       cpu: "500m"
                   readinessProbe:
-                    httpget: 
+                    httpGet: 
                       path: /health
                       port: liveness-port
                   
                   livenessProbe:
-                    httpget:
+                    httpGet:
                       path: /health
                       port: liveness-port
 
@@ -101,6 +104,6 @@ spec:
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-
+  
 
   ## Eplanations: HPA (Horizontal Pod Autoscaler) is a Kubernetes resource that automatically scales the number of pods in a deployment based on observed CPU utilization or other select metrics. In this case, the HPA is configured to monitor the CPU usage of the "cart" deployment and adjust the number of replicas between a minimum of 2 and a maximum of 10, aiming to maintain an average CPU utilization of 80%.
