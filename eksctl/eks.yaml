@@ -9,3 +9,13 @@ managedNodeGroups:
     instanceTypes: ["m5.large", "c3.large","c4.large","c5.large"]
     desiredCapacity: 2 #  by default this value is 3
     spot: true
+
+
+
+  ## eksctl create cluster --config-file=eksctl/eks.yaml
+  ## eksctl delete cluster --config-file=eksctl/eks.yaml
+
+         ## or ##
+
+  
+  ## eksctl create cluster --config-file=eksctl/eks.yaml --region us-east-1

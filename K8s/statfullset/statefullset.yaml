@@ -1,0 +1,54 @@
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-statefulset
+  labels:
+    project: JCS-Global-service
+    user: maruthi
+    role: project-lead
+
+spec:
+  replicas: 3
+  matchLabels:
+    project: JCS-Global-service
+    user: maruthi
+    role: project-lead
+  template:
+    metadata:
+      labels:
+        project: JCS-Global-service
+        user: maruthi
+        role: project-lead
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+            - containerPort: 3306
+          volumemounts:
+            - name: nginx-persistent-storage
+              mountPath: /usr/share/nginx/html
+          
+  volumeClaimsTemplate:
+    - metadata:
+        name: nginx-persistent-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+
+
+## kubectl apply -f StatefulSet.yaml
+## kubectl get StatefulSet
+## kubectl get pods
+## kubectl get pvc
+## kubectl get pv
+
+# kubectl delete StatefulSet nginx-StatefulSet
+
+
+# stable pods names are created in StatefulSet, and they are not deleted when the StatefulSet is deleted. The pods will be recreated with the same name when the StatefulSet is recreated.
+# stable DNS names are created in StatefulSet, same as above statment
+# stable storage is created through pre-prod PVCs

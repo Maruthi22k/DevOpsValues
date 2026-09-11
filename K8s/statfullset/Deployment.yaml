@@ -1,0 +1,58 @@
+name: Deployment headless 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+    # these are replica set labels
+  labels:
+    perpose: db-perpose
+    project: IKANO
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      perpose: headless-db-perpose
+      project: IKANO
+  template:
+    metadata:
+      labels:
+        perpose: headless-db-perpose
+        project: IKANO
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  # if a service clusterIP then it is called as headless service
+  clusterIP: None   ## clusterIP: None if you menction means that is headless , this is headless service, so clusterIP is None,
+  selector:
+    purpose: headless-db-perpose
+    project: IKANO
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # container port
+  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer 
+  selector:
+    purpose: headless-db-perpose
+    project: IKANO
+  ports:
+    - protocol: TCP
+      port: 80 # service port
+      targetPort: 80 # container port

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: ikano-statefulset
+
+spec:
+  serviceName: "ikano-service"
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: ikano
+
+  template:
+    metadata:
+      labels:
+        app: ikano
+
+    spec:
+      containers:
+        - name: ikano-container
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumemounts:
+            - name: ikano-volume
+              mountPath: /usr/share/nginx/html
+
+  volumeClaimsTemplate:
+    - metadata:
+        name: ikano-volume
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "ebs-sc" ## use the storage class name you created in the previous step
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikano-service
+spec:
+  clusterIP: None
+  selector:
+    app: ikano
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+
+
+
+## kubectl apply --dry-run=client -f ikano-statefulset.yaml

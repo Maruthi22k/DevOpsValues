@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-config
+  namespace: kube-project
+
+data:
+  APP_ENV: dev
+  APP_DEBUG: "true"
+  APP_PORT: "8080"
+  DB_HOST: mysql-service
+  DB_PORT: "3306"
+  DB_USER: root
+  DB_PASSWORD: password
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart
+  namespace: kube-project
+
+  labels:
+    app: cart
+    project: cart-dev
+    environment: dev
+
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      app: cart
+      project: cart-dev
+      environment: dev
+
+      template:
+        metadata:
+          labels:
+            app: cart
+            project: cart-dev
+            environment: dev
+
+            spec:
+              containers:
+                - name: cart-dev-cont
+                  image: nginx:latest
+                  imagePullPolicy: Always   ## always pull the image from dockerhub latest tag
+                  ports:
+                    - name: liveness-port
+                      containerport: 8080
+                     
+                  resources:
+                    requests:
+                      memory: "64Mi"
+                      cpu: "250m"
+                    limits:
+                      memory: "128Mi"
+                      cpu: "500m"
+                  readinessProbe:
+                    httpget: 
+                      path: /health
+                      port: liveness-port
+                  
+                  livenessProbe:
+                    httpget:
+                      path: /health
+                      port: liveness-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+
+  labels:
+    app: cart
+    project: cart-dev
+    environment: dev
+spec:
+  selector:
+    app: cart
+    project: cart-dev
+    environment: dev
+  ports:
+    - protocol: TCP
+      port: 8080 # service port
+      targetPort: 8080 # container port
+
+---
+apiVersion: networking.k8s.io/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cart-hpa
+  namespace: kube-project
+spec:
+  scaleTargetRef:    ## use of scaleTargetRef is to specify the target resource that the HPA will scale. In this case, it is referring to the Deployment named "cart" in the "kube-project" namespace. The HPA will monitor the CPU utilization of the pods managed by this Deployment and adjust the number of replicas accordingly, within the specified minimum 
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cart
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+
+  ## Eplanations: HPA (Horizontal Pod Autoscaler) is a Kubernetes resource that automatically scales the number of pods in a deployment based on observed CPU utilization or other select metrics. In this case, the HPA is configured to monitor the CPU usage of the "cart" deployment and adjust the number of replicas between a minimum of 2 and a maximum of 10, aiming to maintain an average CPU utilization of 80%.

@@ -1,0 +1,44 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-pod
+  namespace: default
+  labels:
+    app: emptydir-app
+spec:
+  containers:
+    - name: emptydir-container
+      image: nginx:latest
+      command: ["/bin/sh", "-c", "while true; do echo 'Hello from emptyDir' > /data/hello.txt; sleep 5; done"]
+      volumeMounts:
+      - name: emptydir
+        mountPath: /var/log/nginx/    ## this is the path in the main container where the emptyDir volume will be mounted
+    
+    - name: sidecar-container
+      image: almalinux:latest
+      command: ["/bin/sh", "-c", "while true; do cat /data/hello.txt; sleep 5; done"]
+      volumeMounts:
+      - name: emptydir
+        mountPath: /maru/act/    ## this is my own path created in the sidecar container to mount the emptyDir volume
+
+
+  volumes:
+  - name: emptydir
+    emptyDir: 
+      sizeLimit: "1Gi" # Optional: Limit the size of the emptyDir volume
+
+
+### Commands ####
+
+# kubectl apply -f emptyDir.yaml
+
+# kubectl get pods emptydir-pod -o wide
+
+# kubectl exec -it emptydir-pod -c sidecar-container -- cat /maru/act/hello.txt
+
+# kubectl exec -it emptydir-pod -c almalinux  -- bash
+
+## ls -l
+## cd /maru/act/
+## ls -l       -----> all related files will be here
