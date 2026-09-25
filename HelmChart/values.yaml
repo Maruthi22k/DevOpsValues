@@ -1,0 +1,12 @@
+
+# repeted values in deployment those values configuring hear 
+
+deployment:
+  replicas: 4
+ # imageVersion: latest
+ # imageVersion: trixie     ## just upgrate new version
+  imageVersion: stable-bookworm-perl
+service:
+  type: loadBalancer
+  port: 80
+  targetPort: 8080

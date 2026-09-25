@@ -15,7 +15,13 @@ managedNodeGroups:
   ## eksctl create cluster --config-file=eksctl/eks.yaml
   ## eksctl delete cluster --config-file=eksctl/eks.yaml
 
+  ## kubernate updated if nodes not up use this command
+  #  aws eks update-kubeconfig --region us-east-1 --name roboshop-dev 
+
+
          ## or ##
 
   
   ## eksctl create cluster --config-file=eksctl/eks.yaml --region us-east-1
+  ## eksctl delete cluster --name roboshop-dev --region us-east-1
+

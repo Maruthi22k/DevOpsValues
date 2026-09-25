@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: nodeport-affinity-pod
+  labels:
+    app: nodeport-affinity-app
+
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname   ## This is the label key that we are using to match nodes based on their hostname.
+                operator: In
+                values:
+                  - us-east-1a   ## This is the value of the label that we are looking for on the nodes. In this case, we are looking for nodes that have the hostname
+
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 80
+
+
+## what is the use of node affinity in kubernetes?
+
+## Ans: Node affinity is a set of rules used by Kubernetes to determine on which nodes a pod can be scheduled. 
+## It allows you to specify preferences or requirements for the nodes where your pods should run, based on labels assigned to those nodes. 
+# Node affinity can be used to ensure that pods are scheduled on specific nodes that meet certain criteria, such as hardware capabilities, geographic location, or other custom labels. 
+# This helps in optimizing resource utilization, improving performance, and ensuring that workloads are placed on appropriate nodes within the cluster.

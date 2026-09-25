@@ -9,6 +9,8 @@ print(value[-4:-1])  ## This will print the elements from index -4 to -2 (last 3
 print(value[-1:]) ## This will print the last element of the list
 
 
+print("welcome to python slicing")
+
 ## Tuple slicing ###
 valueTuple = (1,2,3,4,5,6,7,8)
 
