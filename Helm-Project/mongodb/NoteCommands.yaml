@@ -1,0 +1,11 @@
+
+Helm install mongodb .
+helm upgrade mongodb --description " give somthing" .
+
+helm list
+
+helm status mongodb 
+
+helm history mongodb
+
+

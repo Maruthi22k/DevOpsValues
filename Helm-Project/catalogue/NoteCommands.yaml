@@ -1,0 +1,7 @@
+
+
+Helm install catalogue .
+
+Helm install catalogue . -f values-dev.yaml
+
+Helm install catalogue . -f values-prod.yaml
