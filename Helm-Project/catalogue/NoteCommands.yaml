@@ -5,3 +5,6 @@ Helm install catalogue .
 Helm install catalogue . -f values-dev.yaml
 
 Helm install catalogue . -f values-prod.yaml
+
+ we are doing some changes in service file targetport 8080 to 80
+helm update catalogue . -f values-dev.yaml --set service.targetport=80

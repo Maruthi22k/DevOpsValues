@@ -1,5 +1,5 @@
 apiVersion: v2
-name: mongodb # chart name
+name: catalogue # chart name
 version:  1.0.0 # chart version
-description: mongodb installation
+description: catalogue installation
 appVersion: v1 # this is application version

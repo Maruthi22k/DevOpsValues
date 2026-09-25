@@ -1,6 +1,6 @@
 deployment:
-  imageRepo: joindevops/mongodb   ### paulmaruthi/mongodb or imagename:latest
+  imageRepo: joindevops/catalogue ### paulmaruthi/mongodb or imagename:latest
   imageVersion: v1
   replicas: 2
 service:
-  type: ClusterIP
+  servicePort: 8080 # default value
