@@ -6,5 +6,16 @@ Helm install catalogue . -f values-dev.yaml
 
 Helm install catalogue . -f values-prod.yaml
 
- we are doing some changes in service file targetport 8080 to 80
-helm update catalogue . -f values-dev.yaml --set service.targetport=80
+ we are doing some changes in service file servicePort 8080 to 80
+helm update catalogue . -f values-dev.yaml --set service.servicePort="80"
+
+kubectl get svc   --> check the updated or not
+
+
+## roleback one version go back
+helm rollback catalogue
+
+kubectl get svc 
+helm history catalogue
+
+helm roleback catalogue 2  --> means spacific varsion 2 or 1 or 4 we are roleback 
