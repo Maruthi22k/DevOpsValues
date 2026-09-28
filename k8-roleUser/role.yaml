@@ -1,15 +1,15 @@
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
+
 metadata:
-  namespace: roboshop
   name: roboshop-trinee
+  namespace: roboshop
 
 rules:
-  - apiGroup: [""]   # incedent core api group like replica, service , pod, those are core other base also
+  - apiGroups: [""]     # incedent core api group like replica, service , pod, those are core other base also
     resources: ["pods"]
-    verbs: ["get", "watch", "list"]
-
-
+    verbs: ["get", "list", "watch"]
 
 
   # kubectl get configmap aws-auth -n kube-system -o yaml
