@@ -1,0 +1,9 @@
+apiVersion: roleUser.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: roboshop
+  name: roboshop-trinee
+roles:
+- apiGroup: [""]   # incedent core api group like replica, service , pod, those are core other base also
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
