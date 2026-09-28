@@ -3,10 +3,13 @@ kind: Role
 metadata:
   namespace: roboshop
   name: roboshop-trinee
+
 roles:
-- apiGroup: [""]   # incedent core api group like replica, service , pod, those are core other base also
-  resources: ["pods"]
-  verbs: ["get", "watch", "list"]
+  - apiGroup: [""]   # incedent core api group like replica, service , pod, those are core other base also
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+
+
 
 
   # kubectl get configmap aws-auth -n kube-system -o yaml
