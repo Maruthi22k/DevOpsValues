@@ -17,5 +17,9 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 
+
+# kubectl apply -f rolebinding.yaml
+# kubectl describe rolebinding roboshop-trinee -n roboshop
+
   ## Very clear-> hear user name "Maruthi" , i am giviing " role"
   # how it role identify because we already given AWS IAM so it easly point to role
