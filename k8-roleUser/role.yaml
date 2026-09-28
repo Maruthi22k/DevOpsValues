@@ -13,4 +13,8 @@ rules:
 
 
   # kubectl get configmap aws-auth -n kube-system -o yaml
+  # kubectl apply -f role.yaml
+  # kubectl get role -n roboshop
+  # kubectl describe role roboshop-trinee -n roboshop
+
 
