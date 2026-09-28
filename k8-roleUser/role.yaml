@@ -4,7 +4,7 @@ metadata:
   namespace: roboshop
   name: roboshop-trinee
 
-roles:
+rules:
   - apiGroup: [""]   # incedent core api group like replica, service , pod, those are core other base also
     resources: ["pods"]
     verbs: ["get", "watch", "list"]
