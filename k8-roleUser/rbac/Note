@@ -1,0 +1,16 @@
+kubectl apply -f serviceaccount.yaml
+kubectl apply -f clusterrole.yaml
+kubectl apply -f clusterrolebinding.yaml
+kubectl apply -f pod.yaml
+
+
+--- Verify---
+
+kubectl get sa -n dev-env
+kubectl get clusterrole dev-reader
+kubectl get clusterrolebinding dev-reader-binding
+kubectl get pod -n dev-env
+
+---- Test --
+kubectl auth can-i --list \
+  --as=system:serviceaccount:dev-env:dev-user
