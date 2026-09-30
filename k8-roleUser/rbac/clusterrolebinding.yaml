@@ -12,3 +12,9 @@ roleRef:
   kind: ClusterRole
   name: dev-cluster
   apiGroup: rbac.authorization.k8s.io
+
+
+  # kubectl apply -f clusterrolebinding.yaml
+  # kubectl get clusterrolebinding dev-cluster-binding
+
+  # kubectl describe clusterrolebinding dev-cluster-binding
