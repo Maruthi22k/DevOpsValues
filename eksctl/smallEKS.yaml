@@ -14,10 +14,17 @@ managedNodeGroups:
     spot: true
 
 
-
-
 # eksctl create nodegroup --config-file=smallEKS.yaml
 
 ## this is for practices perpose and use eks.yaml beacuse there instanceTypes: ["m5.large", "c3.large", "c4.large", "c5.large"]
 
 ## practices this is
+
+
+
+
+aws eks update-nodegroup-config \
+  --cluster-name roboshop-dev \
+  --nodegroup-name roboshop-dev-ng \
+  --scaling-config minSize=0,maxSize=2,desiredSize=2 \
+  --region us-east-1

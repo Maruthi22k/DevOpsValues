@@ -1,0 +1,26 @@
+
+
+
+----- Stop Nodes --
+aws eks describe-update \
+  --name roboshop-dev \
+  --nodegroup-name roboshop-dev-ng \
+  --update-id fa52e7a0-8443-371e-b5c6-a72cff3d8b52 \
+  --region us-east-1
+
+
+------- check this also ---
+
+aws eks describe-nodegroup \
+  --cluster-name roboshop-dev \
+  --nodegroup-name roboshop-dev-ng \
+  --region us-east-1 \
+  --query 'nodegroup.{Status:status,Min:minSize,Desired:desiredSize,Max:maxSize}'
+
+
+-------- Node restart ---
+aws eks update-nodegroup-config \
+  --cluster-name roboshop-dev \
+  --nodegroup-name roboshop-dev-ng \
+  --scaling-config minSize=0,maxSize=2,desiredSize=2 \
+  --region us-east-1
