@@ -26,6 +26,7 @@ spec:
           image: nginx:latest
           ports:
             - containerPort: 3306
+            
           volumemounts:
             - name: nginx-persistent-storage
               mountPath: /usr/share/nginx/html

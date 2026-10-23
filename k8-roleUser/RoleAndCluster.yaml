@@ -22,3 +22,17 @@ rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["persistentvolumes"]
   verbs: ["get", "list", "watch"]
+
+
+  ## kubectl apply -f roboshop-admin.yaml
+  # kubectl get role roboshop-admin -n roboshop
+  # kubectl describe role roboshop-admin -n roboshop
+  # kubectl get clusterrole roboshop-admin
+  # kubectl describe clusterrole roboshop-admin
+  # kubectl auth can-i get storageclasses --as=system:serviceaccount:roboshop:roboshop-admin
+  # kubectl auth can-i get persistentvolumes --as=system:serviceaccount:roboshop:roboshop-admin
+  # kubectl auth can-i get pods --as=system:serviceaccount:roboshop:roboshop-admin -n roboshop
+  # kubectl auth can-i get pods --as=system:serviceaccount:roboshop:roboshop-admin -n default
+  # kubectl get pv
+  # kubectl get sc
+  

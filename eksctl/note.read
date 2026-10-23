@@ -11,11 +11,11 @@ aws eks describe-update \
 
 ------- check this also ---
 
-aws eks describe-nodegroup \
-  --cluster-name roboshop-dev \
-  --nodegroup-name roboshop-dev-ng \
-  --region us-east-1 \
-  --query 'nodegroup.{Status:status,Min:minSize,Desired:desiredSize,Max:maxSize}'
+  aws eks describe-nodegroup \
+    --cluster-name roboshop-dev \
+    --nodegroup-name roboshop-dev-ng \
+    --region us-east-1 \
+    --query 'nodegroup.{Status:status,Min:minSize,Desired:desiredSize,Max:maxSize}'
 
 
 -------- Node restart ---
@@ -24,3 +24,7 @@ aws eks update-nodegroup-config \
   --nodegroup-name roboshop-dev-ng \
   --scaling-config minSize=0,maxSize=2,desiredSize=2 \
   --region us-east-1
+
+
+
+

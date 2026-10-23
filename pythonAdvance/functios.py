@@ -16,8 +16,9 @@ addition(34)
 def validation (str, *num1):
     str =100
 
+ 
 print(str)
-validation("validation object", 30,40)
+validation("validation OBJect", 30,40)
 
 
 

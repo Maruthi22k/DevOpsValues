@@ -21,10 +21,8 @@ managedNodeGroups:
 ## practices this is
 
 
-
-
-aws eks update-nodegroup-config \
-  --cluster-name roboshop-dev \
-  --nodegroup-name roboshop-dev-ng \
-  --scaling-config minSize=0,maxSize=2,desiredSize=2 \
-  --region us-east-1
+# aws eks update-nodegroup-config \
+#   --cluster-name roboshop-dev \
+#   --nodegroup-name roboshop-dev-ng \
+#   --scaling-config minSize=0,maxSize=2,desiredSize=2 \
+#   --region us-east-1

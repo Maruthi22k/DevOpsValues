@@ -1,0 +1,40 @@
+
+sudo growpart /dev/nvme0n1 4
+sudo lvextend -L +20G /dev/RootVG/rootVol
+sudo lvextend -L +20G /dev/RootVG/varVol
+
+sudo xfs_growfs /
+sudo xfs_growfs /var
+
+vim /etc/yum.repos.d/elasticsearch.repo
+
+[elasticsearch]
+name=Elasticsearch repository for 9.x packages
+baseurl=https://artifacts.elastic.co/packages/9.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+type=rpm-md
+
+
+
+dnf install elasticsearch kibana logstash nginx -y
+
+systemctl start elasticsearch
+systemctl start kibana
+
+netstat -lntp
+systemctl start nginx
+
+
+
+
+---------- filebeat install ---
+
+first take other server to sending to ELK 
+
+enabled: true
+inputs: nginx access log
+outputs: elastic
+ssl_verification: none
+protocol: https

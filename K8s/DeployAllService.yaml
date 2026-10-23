@@ -1,0 +1,67 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ikano-deployment
+  namespace: ikano
+  labels:
+    app: ikano
+    project: ikano
+    environment: dev
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: ikano
+      project: ikano
+      environment: dev
+
+  template:
+    metadata:
+      labels:
+        app: ikano
+        project: ikano
+        environment: dev
+
+    spec:
+      containers:
+      - name: ikano-container
+        image: nginx:alpine
+        imagePullPolicy: IfNotPresent
+        
+        ports:
+        - name: liveness-port
+          containerPort: 8080
+          protocol: TCP
+
+        - name: readiness-port
+          containerPort: 8080
+          protocol: TCP
+
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: liveness-port
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: readiness-port
+
+        volumemounts:
+        - name: ikano-volume
+          mounthPath: /data
+
+    volumes:
+     - name: ikano-volume
+       persistentVolumeClaim:
+          claimName: ikano-pvc
