@@ -18,3 +18,11 @@ spec:
     image:
       reference: quay.io/crio/artifact:v2
       pullPolicy: IfNotPresent
+
+
+
+## kubectl apply -f https://k8s.io/examples/pods/image-volumes.yaml
+## kubectl exec image-volume -it -- bash
+# cat /volume/dir/file
+
+# cat /volume/file   --> check other file in the volume
