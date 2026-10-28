@@ -1,0 +1,7 @@
+
+
+
+kubectl apply --dry-run=server -f argocd/apache/configmap.yaml
+kubectl apply --dry-run=server -f argocd/apache/deployment.yaml
+kubectl apply --dry-run=server -f argocd/apache/service.yaml
+kubectl apply --dry-run=server -f argocd/applications/apache-demo.yaml
