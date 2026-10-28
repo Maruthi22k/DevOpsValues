@@ -1,0 +1,20 @@
+#cat > argocd/apache/configmap.yaml 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-demo-content
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Apache on AWS EKS</title>
+    </head>
+    <body>
+      <h1>Apache GitOps Deployment Successful!</h1>
+      <p>Application: apache-demo</p>
+      <p>Platform: AWS EKS</p>
+      <p>Deployment managed by Argo CD.</p>
+    </body>
+    </html>
