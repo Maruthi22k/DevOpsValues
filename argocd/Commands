@@ -1,7 +1,81 @@
 
+DevOpsValues/
+├── argocd/
+│   ├── nginx/
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   └── applications/
+│       └── nginx-demo.yaml
+└── .github/
+    └── workflows/
+        └── validate-nginx-manifests.yml
 
+====================
+
+kubectl apply -f argocd/applications/nginx-demo.yaml
+kubectl get applications -n argocd
+kubectl get all -n nginx-demo
+argocd app get nginx-demo
+
+
+
+==============
+cd ~/DevOpsValues
+
+git diff --check
+git status --short
+
+kubectl apply -f argocd/applications/apache-demo.yaml
+
+kubectl get applications -n argocd
+argocd app get apache-demo
 
 kubectl apply --dry-run=server -f argocd/apache/configmap.yaml
 kubectl apply --dry-run=server -f argocd/apache/deployment.yaml
 kubectl apply --dry-run=server -f argocd/apache/service.yaml
 kubectl apply --dry-run=server -f argocd/applications/apache-demo.yaml
+
+kubectl config current-context
+kubectl get nodes
+kubectl get pods -n argocd  
+kubectl get svc -n argocd
+argocd version --client
+
+
+-----------------------------
+kubectl get applications.argoproj.io -n argocd
+
+argocd app list
+
+kubectl get pods -n argocd -o wide
+kubectl get deploy,statefulset -n argocd
+kubectl get svc -n argocd
+
+
+----------------------------------------------------
+Module 05 — Argo CD with Kustomize and Helm
+ Kustomize: different configurations for dev and production
+
+
+argocd/nginx-kustomize/
+├── base/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── kustomization.yaml
+└── overlays/
+    ├── dev/
+    │   └── kustomization.yaml
+    └── prod/
+        └── kustomization.yaml
+
+
+kubectl kustomize argocd/nginx-kustomize/overlays/dev
+kubectl kustomize argocd/nginx-kustomize/overlays/prod
+
+After the files are committed to Git, point separate Argo CD Applications at argocd/nginx-kustomize/overlays/dev and argocd/nginx-kustomize/overlays/prod.
+
+Before using this example, ensure the base contains the Deployment and Service from Module 03. The two environments should have distinct namespaces and appropriate environment-specific settings.
+
+-----------------------------------------
+
+
