@@ -3,6 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-demo
+  # annotations:
+  #  argocd.argoproj.io/sync-wave: "1"  ## Sync wave annotation to ensure that the ConfigMap is applied before the Deployment
+
   labels:
     app: nginx-demo
 spec:

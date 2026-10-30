@@ -79,6 +79,8 @@ After the files are committed to Git, point separate Argo CD Applications at arg
 
 Before using this example, ensure the base contains the Deployment and Service from Module 03. The two environments should have distinct namespaces and appropriate environment-specific settings.
 
+Production connection: Kustomize is useful for environment-specific overlays. Helm is useful for configurable packaged applications such as monitoring stacks, ingress controllers and third-party services.
+
 -----------------------------------------
 
 
