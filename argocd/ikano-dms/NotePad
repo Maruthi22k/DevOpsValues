@@ -1,0 +1,43 @@
+IKANO DMS — Multi-Cluster AWS EKS + Argo CD GitOps
+==================================================
+We'll build a production-oriented GitOps reference project named IKANO DMS using your existing DevOpsValues repository and Argo CD installation.
+
+The goal is to deploy the same application to multiple EKS clusters, keep development and production configuration separate, validate changes with GitHub Actions, and use Argo CD for deployment and drift correction.
+
+One important distinction: this is a production-oriented implementation template, not a certified production deployment for a bank. Your actual DMS application image, security requirements, network architecture, secrets integration and approval policies must be supplied and reviewed before production use.
+
+DevOpsValues/
+├── argocd/
+│   ├── ikano-dms/
+│   │   ├── base/
+│   │   │   ├── deployment.yaml
+│   │   │   ├── service.yaml
+│   │   │   ├── configmap.yaml
+│   │   │   ├── pdb.yaml
+│   │   │   └── kustomization.yaml
+│   │   ├── overlays/
+│   │   │   ├── dev/
+│   │   │   │   └── kustomization.yaml
+│   │   │   └── prod/
+│   │   │       └── kustomization.yaml
+│   │   └── projects/
+│   │       └── ikano-dms-project.yaml
+│   └── applications/
+│       └── ikano-dms-appset.yaml
+├── .github/
+│   └── workflows/
+│       └── validate-ikano-dms.yml
+└── README.md
+
+
+For this example:
+- Management cluster: your existing EKS cluster, which already runs Argo CD.
+- Target cluster 1: a development EKS cluster.
+- Target cluster 2: a production EKS cluster.
+- Application: IKANO DMS, assumed to be a web/API service listening on port 8080.
+- Container registry: Amazon ECR.
+- Deployment controller: Argo CD ApplicationSet.
+- Environment configuration: Kustomize.
+
+
+

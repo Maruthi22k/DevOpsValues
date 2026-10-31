@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ikano-dms
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            ikano-managed: "true"
+
+  template:
+    metadata:
+      name: 'ikano-dms-{{.name}}'
+      labels:
+        app.kubernetes.io/part-of: ikano-dms
+    spec:
+      project: ikano-dms
+
+      source:
+        repoURL: https://github.com/Maruthi22k/DevOpsValues.git
+        targetRevision: main
+        path: 'argocd/ikano-dms/overlays/{{index .metadata.labels "environment"}}'
+
+      destination:
+        name: '{{.name}}'
+        namespace: ikano-dms
+
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
+
+  kubectl apply -f argocd/applications/ikano-dms-appset.yaml
+
+  kubectl get applicationsets -n argocd
+kubectl get applications -n argocd

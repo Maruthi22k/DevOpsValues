@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ikano-dms
+  namespace: argocd
+spec:
+  description: IKANO DMS GitOps workloads
+
+  sourceRepos:
+    - https://github.com/Maruthi22k/DevOpsValues.git
+
+  destinations:
+    - server: "*"
+      namespace: ikano-dms
+
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: policy
+      kind: PodDisruptionBudget
+
+
+  ## kubectl apply -f argocd/ikano-dms/projects/ikano-dms-project.yaml
+
+# kubectl get appproject ikano-dms -n argocd
+# kubectl describe appproject ikano-dms -n argocd
+# kubectl config get-contexts
+# kubectl config current-context
+# aws sts get-caller-identity
+# aws eks list-clusters --region us-east-1

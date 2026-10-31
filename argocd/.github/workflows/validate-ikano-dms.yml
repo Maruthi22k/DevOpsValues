@@ -1,0 +1,51 @@
+name: Validate IKANO DMS GitOps Manifests
+
+on:
+  pull_request:
+    paths:
+      - "argocd/ikano-dms/**"
+      - "argocd/applications/ikano-dms-appset.yaml"
+      - ".github/workflows/validate-ikano-dms.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "argocd/ikano-dms/**"
+      - "argocd/applications/ikano-dms-appset.yaml"
+      - ".github/workflows/validate-ikano-dms.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate dev manifests
+        run: |
+          kubectl kustomize argocd/ikano-dms/overlays/dev \
+            > /tmp/ikano-dev.yaml
+
+      - name: Validate production manifests
+        run: |
+          kubectl kustomize argocd/ikano-dms/overlays/prod \
+            > /tmp/ikano-prod.yaml
+
+      - name: Install kubeconform
+        run: |
+          set -euo pipefail
+          VERSION="0.6.7"
+          curl -fsSL \
+            "https://github.com/yannh/kubeconform/releases/download/v${VERSION}/kubeconform-linux-amd64.tar.gz" \
+            -o /tmp/kubeconform.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp kubeconform
+          sudo install /tmp/kubeconform /usr/local/bin/kubeconform
+
+      - name: Validate Kubernetes schemas
+        run: |
+          kubeconform -strict -summary /tmp/ikano-dev.yaml
+          kubeconform -strict -summary /tmp/ikano-prod.yaml

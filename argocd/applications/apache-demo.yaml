@@ -14,7 +14,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: apache-demo
+    namespace: apache-demo    ## This is the namespace where the application will be deployed. and match the namespace (apache-demo in deployment.yaml) in the project destinations.
   syncPolicy:
     automated:
       prune: true

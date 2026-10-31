@@ -1,0 +1,14 @@
+
+Look for errors such as:
+- ImagePullBackOff or ErrImagePull
+- FailedMount
+- ProgressDeadlineExceeded
+- ComparisonError
+- ManifestGenerationError
+These messages will tell us why Apache is degraded.
+
+
+# kubectl logs -n apache-demo deployment/apache-demo
+# kubectl get pods -n apache-demo
+# 
+#

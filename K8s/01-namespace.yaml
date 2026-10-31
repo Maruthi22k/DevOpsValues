@@ -3,3 +3,7 @@ kind: Namespace
 metadata:
   name: ikano-name
  
+
+ # kubectl create namespace ikano-name
+
+ # kubectl apply -f K8s/01-namespace.yaml

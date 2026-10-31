@@ -1,0 +1,40 @@
+
+# Module 09 — ApplicationSets zero to hero
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-environments
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev
+            namespace: nginx-dev
+          - env: staging
+            namespace: nginx-staging
+  template:
+    metadata:
+      name: nginx-{{env}}
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/Maruthi22k/DevOpsValues.git
+        targetRevision: main
+        path: argocd/nginx
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+        
+      syncPolicy:
+        automated:
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+
+
+## An ApplicationSet can generate multiple Argo CD Applications from a list of environments, clusters or repositories.
+

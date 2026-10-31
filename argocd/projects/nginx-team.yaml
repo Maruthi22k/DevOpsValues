@@ -3,6 +3,7 @@ kind: AppProject
 metadata:
   name: nginx-team
   namespace: argocd
+  
 spec:
   description: Project for the Nginx application team
   sourceRepos:
@@ -21,7 +22,7 @@ spec:
       kind: Deployment
 
 
-      #kubectl apply -f argocd/projects/nginx-team.yaml
+#kubectl apply -f argocd/projects/nginx-team.yaml
 
 #  Module 08 — Projects, accounts and RBAC
 # In production, users should only be able to deploy applications and access resources they are authorized to manage.

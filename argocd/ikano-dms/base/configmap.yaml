@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ikano-dms-config
+
+  data:
+    # Add your configuration data here
+    # For example:
+    # key1: value1
+    # key2: value2
+    APP_NAME: ikano-dms
+    APP_ENV: production
+    LOG_FORMAT: json
+    LOG_LEVEL: info
+    

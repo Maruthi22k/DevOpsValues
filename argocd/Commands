@@ -83,4 +83,17 @@ Production connection: Kustomize is useful for environment-specific overlays. He
 
 -----------------------------------------
 
+DevOpsValues/
+├── argocd/
+│   ├── nginx/
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   └── applications/
+│       ├── nginx-demo.yaml
+│       └── nginx-environments.yaml
+└── .github/
+    └── workflows/
+        └── validate-nginx-manifests.yaml
 
+
+-------------

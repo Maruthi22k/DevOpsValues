@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ikano-dms
+  labels:
+    app.kubernetes.io/name: ikano-dms
+
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: ikano-dms
+    
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP

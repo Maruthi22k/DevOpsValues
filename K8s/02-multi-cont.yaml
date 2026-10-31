@@ -6,11 +6,12 @@ metadata:
     name: multi-cont-lable
 spec:
   containers:
-  - name: nginx-container
-    image: nginx
-    ports:
+    - name: nginx-container
+      image: nginx
+      ports:
     - containerPort: 80
-  - name: redis-container
-    image: redis
-    ports:
-    - containerPort: 6379
+
+    - name: redis-container
+      image: redis
+      ports:
+      - containerPort: 6379

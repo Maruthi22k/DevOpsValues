@@ -15,7 +15,7 @@ spec:
 
 
   destination:
-    server: https://kubernetes.default.svc
+    server: https://kubernetes.default.svc      ## kubectl get svc (hear 'kubernetes' default.svc is the internal cluster (name kubernetes )URL for the Kubernetes API server)
     namespace: nginx-demo
 
   syncPolicy:

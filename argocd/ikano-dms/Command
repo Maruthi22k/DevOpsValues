@@ -1,0 +1,20 @@
+
+
+cd ~/DevOpsValues
+
+git status
+git branch --show-current
+kubectl config current-context
+kubectl get nodes
+kubectl get pods -n argocd
+
+git switch -c feature/ikano-dms-multicluster
+
+Create the directories:
+=======================
+mkdir -p argocd/ikano-dms/base
+mkdir -p argocd/ikano-dms/overlays/dev
+mkdir -p argocd/ikano-dms/overlays/prod
+mkdir -p argocd/ikano-dms/projects
+mkdir -p argocd/applications
+mkdir -p .github/workflows
