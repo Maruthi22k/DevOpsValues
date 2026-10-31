@@ -46,4 +46,4 @@ jobs:
             argocd/apache/service.yaml
 
 
-#  kubectl apply -f argocd/applications/ikano-dms-appset.yaml
+#  kubectl apply -f argocd/applications/ikano-dms-appset.yaml 

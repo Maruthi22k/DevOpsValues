@@ -7,13 +7,11 @@ spec:
   goTemplate: true
   goTemplateOptions:
     - missingkey=error
-
   generators:
     - clusters:
         selector:
           matchLabels:
             ikano-managed: "true"
-
   template:
     metadata:
       name: 'ikano-dms-{{.name}}'
@@ -21,16 +19,13 @@ spec:
         app.kubernetes.io/part-of: ikano-dms
     spec:
       project: ikano-dms
-
       source:
         repoURL: https://github.com/Maruthi22k/DevOpsValues.git
         targetRevision: main
         path: 'argocd/ikano-dms/overlays/{{index .metadata.labels "environment"}}'
-
       destination:
         name: '{{.name}}'
         namespace: ikano-dms
-
       syncPolicy:
         automated:
           prune: false
@@ -39,7 +34,7 @@ spec:
           - CreateNamespace=true
 
 
-  kubectl apply -f argocd/applications/ikano-dms-appset.yaml
+  # kubectl apply -f argocd/applications/ikano-dms-appset.yaml
 
-  kubectl get applicationsets -n argocd
-kubectl get applications -n argocd
+  # kubectl get applicationsets -n argocd
+  # kubectl get applications -n argocd

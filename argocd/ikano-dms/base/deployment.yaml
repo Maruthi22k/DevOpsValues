@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ikano-dms
     app.kubernetes.io/part-of: ikano-dms
+    
 spec:
   replicas: 2
   revisionHistoryLimit: 5
