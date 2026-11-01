@@ -18,8 +18,36 @@ kubectl get all -n nginx-demo
 argocd app get nginx-demo
 
 
+kubectl get namespace nginx-demo
+
+kubectl get deployment,pods,svc -n nginx-demo -o wide
+
+
+kubectl rollout status deployment/nginx-demo \
+  -n nginx-demo --timeout=180s
+
+kubectl get deployment nginx-demo -n nginx-demo
+kubectl get pods -n nginx-demo -o wide
+kubectl get endpoints nginx-demo -n nginx-demo
 
 ==============
+
+DevOpsValues/
+└── argocd/
+    ├── apache/
+    │   ├── deployment.yaml
+    │   └── service.yaml
+    ├── nginx-overlays/
+    │   ├── base/
+    │   │   └── kustomization.yaml
+    │   └── overlays/
+    │       ├── dev/
+    │       │   └── kustomization.yaml
+    │       └── staging/
+    │           └── kustomization.yaml
+    └── applications/
+        └── validate-app-manifests.yml
+
 cd ~/DevOpsValues
 
 git diff --check
