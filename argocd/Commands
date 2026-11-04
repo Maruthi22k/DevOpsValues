@@ -124,4 +124,67 @@ DevOpsValues/
         └── validate-nginx-manifests.yaml
 
 
--------------
+----------------------------------------
+
+ikano-dms-service/
+├── src/
+├── tests/
+├── Dockerfile
+├── .dockerignore
+└── .github/
+    └── workflows/
+        └── ci.yaml
+
+ikano-dms-gitops/
+├── bootstrap/
+│   └── root-app.yaml
+├── applications/
+│   ├── dms-dev.yaml
+│   ├── dms-staging.yaml
+│   └── dms-production.yaml
+├── charts/
+│   └── dms/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+│           ├── deployment.yaml
+│           ├── service.yaml
+│           ├── ingress.yaml
+│           ├── serviceaccount.yaml
+│           ├── hpa.yaml
+│           ├── pdb.yaml
+│           └── networkpolicy.yaml
+├── environments/
+│   ├── dev/values.yaml
+│   ├── staging/values.yaml
+│   └── production/values.yaml
+└── platform/
+    ├── namespaces.yaml
+    └── applicationset.yaml
+
+
+9. Production verification commands
+After the reviewed GitOps change has been merged and synchronized, run:
+
+# Argo CD status
+argocd app get dms-production
+
+# Kubernetes resources
+kubectl get all -n dms-production
+
+# Deployment health
+kubectl rollout status deployment/dms-dms \
+  -n dms-production --timeout=300s
+
+# Pod details
+kubectl get pods -n dms-production -o wide
+
+# Service and ingress
+kubectl get svc,ingress -n dms-production
+
+# HPA and disruption budget
+kubectl get hpa,pdb -n dms-production
+
+# Logs
+kubectl logs -n dms-production \
+  deployment/dms-dms --tail=100

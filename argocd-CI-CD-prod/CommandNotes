@@ -1,0 +1,150 @@
+
+
+
+ikano-dms-service/
+├── src/
+├── tests/
+├── Dockerfile
+├── .dockerignore
+└── .github/
+    └── workflows/
+        └── ci.yaml
+
+ikano-dms-gitops/
+├── bootstrap/
+│   └── root-app.yaml
+├── applications/
+│   ├── dms-dev.yaml
+│   ├── dms-staging.yaml
+│   └── dms-production.yaml
+├── charts/
+│   └── dms/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+│           ├── deployment.yaml
+│           ├── service.yaml
+│           ├── ingress.yaml
+│           ├── serviceaccount.yaml
+│           ├── hpa.yaml
+│           ├── pdb.yaml
+│           └── networkpolicy.yaml
+├── environments/
+│   ├── dev/values.yaml
+│   ├── staging/values.yaml
+│   └── production/values.yaml
+└── platform/
+    ├── namespaces.yaml
+    └── applicationset.yaml
+
+
+6. Validate the chart before deploying
+---------
+From the GitOps repository root:
+helm lint charts/dms \
+  -f environments/production/values.yaml
+
+helm template dms charts/dms \
+  --namespace dms-production \
+  -f environments/production/values.yaml \
+  > /tmp/dms-rendered.yaml
+
+kubectl apply --dry-run=client \
+  -f /tmp/dms-rendered.yaml
+
+7. Bootstrap Argo CD on Amazon EKS
+----------
+aws sts get-caller-identity
+
+aws eks update-kubeconfig \
+  --region us-east-1 \
+  --name roboshop-dev
+
+kubectl get nodes
+-------
+kubectl create namespace argocd
+
+kubectl apply -n argocd \
+  --server-side \
+  --force-conflicts \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl rollout status deployment/argocd-server \
+  -n argocd --timeout=300s
+
+kubectl get pods -n argocd
+
+
+--------
+Access the Argo CD UI
+
+kubectl port-forward \
+  -n argocd svc/argocd-server 8080:443
+
+[text](https://localhost:8080)
+
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath='{.data.password}' | base64 -d
+echo
+
+
+8. Register the GitOps repository with Argo CD
+------------------------
+If the GitOps repository is public, Argo CD can read it without repository credentials. For a private repository, register a read-only deploy key or supported repository credential.
+
+
+argocd login localhost:8080
+argocd repo add \
+  https://github.com/YOUR_ORG/ikano-dms-gitops.git
+
+
+
+kubectl apply -f applications/production-project.yaml
+kubectl apply -f applications/dms-production.yaml
+
+kubectl get applications -n argocd
+argocd app get dms-production
+
+9. Production verification commands
+---------------------------
+
+# Argo CD status
+argocd app get dms-production
+
+# Kubernetes resources
+kubectl get all -n dms-production
+
+# Deployment health
+kubectl rollout status deployment/dms-dms \
+  -n dms-production --timeout=300s
+
+# Pod details
+kubectl get pods -n dms-production -o wide
+
+# Service and ingress
+kubectl get svc,ingress -n dms-production
+
+# HPA and disruption budget
+kubectl get hpa,pdb -n dms-production
+
+# Logs
+kubectl logs -n dms-production \
+  deployment/dms-dms --tail=100
+
+------------------
+
+kubectl describe pods -n dms-production
+
+kubectl get events -n dms-production \
+  --sort-by=.metadata.creationTimestamp
+kubectl describe deployment -n dms-production dms-dms
+
+
+----------
+11. Recommended implementation order for your AWS lab
+1. Deploy one sample HTTP service to your existing EKS lab using the Helm chart.
+2. Install Argo CD and synchronize the service from the GitOps repository.
+3. Configure GitHub Actions to test, build, scan, and push immutable images.
+4. Automate GitOps pull-request creation and verify the reviewed promotion updates the workload.
+5. Add staging and production environments, protected branches, SSO/RBAC, secrets management, and monitoring.
+6. Test rollback, node failure, pod disruption, recovery from a bad release, and database restore.
