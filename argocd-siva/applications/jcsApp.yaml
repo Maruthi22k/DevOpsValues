@@ -10,6 +10,7 @@ metadata:
     source:
       repoURL: 'https://github.com/Maruthi22k/DevOpsValues.git'
       targetRevision: main
+      path: argocd-siva/deployments
 
     destination:
       server: 'https://kubernetes.default.svc'
