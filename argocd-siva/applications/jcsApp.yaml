@@ -1,22 +1,24 @@
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
+
 metadata:
   name: jcsApp
   namespace: argocd
 
-  spec:
-    project: Jpay-JCS
+spec:
+  project: Jpay-JCS
 
-    source:
-      repoURL: 'https://github.com/Maruthi22k/DevOpsValues.git'
-      targetRevision: main
-      path: argocd-siva/deployments
+  source:
+    repoURL: 'https://github.com/Maruthi22k/DevOpsValues.git'
+    targetRevision: main
+    path: argocd-siva/deployments
 
-    destination:
-      server: 'https://kubernetes.default.svc'
-      namespace: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
 
-    syncPolicy:
-      automated:
-        prune: true  # use this to automatically delete resources that are no longer defined in the Git repository
-        selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
