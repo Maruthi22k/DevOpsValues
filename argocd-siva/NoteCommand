@@ -1,0 +1,16 @@
+
+
+3. Validate and apply
+--------------------
+kubectl apply -f applications/jcsApp.yaml
+ --- or----
+kubectl apply --dry-run=server -f applications/jcsApp.yaml
+
+4. Verify ArgoCD Application
+-------------------------
+kubectl get applications -n argocd
+kubectl get application jcsApp -n argocd
+kubectl describe application jcsApp -n argocd
+
+
+

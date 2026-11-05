@@ -4,6 +4,6 @@ metadata:
   name: jcs
   labels:
     environment: poc
-    project: Jpay-JCS
+    project: jpay-jcs
     purpose: poc
 
