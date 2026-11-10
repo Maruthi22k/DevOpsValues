@@ -1,9 +1,0 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Namespace
-metadata:
-  name: jcs
-  labels:
-    environment: poc
-    project: jpay-jcs
-    purpose: poc
-
